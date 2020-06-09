@@ -1,4 +1,4 @@
-import NCMB from './ncmb.ts'
+import NCMB from 'https://raw.githubusercontent.com/goofmint/ncmb_deno/master/ncmb.ts'
 import { readJson } from 'https://deno.land/std/fs/read_json.ts'
 const config = await readJson('./config.json') as { [s: string]: string }
 const applicationKey = config.applicationKey
