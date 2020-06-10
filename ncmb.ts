@@ -1,6 +1,7 @@
 import NCMBObject from './object.ts'
 import NCMBSignature from './signature.ts'
 import NCMBRequest from './request.ts'
+import NCMBQuery from './query.ts'
 
 class NCMB {
   applicationKey: string
@@ -25,6 +26,10 @@ class NCMB {
 
   Object(name: string): NCMBObject {
     return new NCMBObject(this, name)
+  }
+
+  Query(name: string): NCMBQuery {
+    return new NCMBQuery(this, name)
   }
 
   path(className: string, objectId: string|null) {
