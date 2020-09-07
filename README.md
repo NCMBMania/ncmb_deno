@@ -49,6 +49,14 @@ deno run --allow-net --allow-read test.ts
 
 ## Node.js × TypeScriptの場合
 
+### インストール
+
+npmなどで行います。
+
+```
+npm install ncmb_ts -S
+```
+
 基本的に使い方は変わりませんが、ルートでのasync/awaitはサポートされていないので注意してください。
 
 ```ts
