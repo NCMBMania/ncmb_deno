@@ -1,6 +1,6 @@
-# NCMB SDK for deno
+# NCMB SDK for deno & TypeScript
 
-denoでNCMB（ニフクラ mobile backend）を使うためのSDKです。非公式ライブラリになります。
+denoでNCMB（ニフクラ mobile backend）を使うためのSDKです。非公式ライブラリになります。Node.js × TypeScript環境でも動作します。
 
 [mBaaSでサーバー開発不要！ | ニフクラ mobile backend](https://mbaas.nifcloud.com/)
 
@@ -46,6 +46,38 @@ console.log(hello.get('objectId'))
 ```
 deno run --allow-net --allow-read test.ts
 ```
+
+## Node.js × TypeScriptの場合
+
+基本的に使い方は変わりませんが、ルートでのasync/awaitはサポートされていないので注意してください。
+
+```ts
+(async () =>  {
+  await hello
+    .set('message', 'Hello world')
+    .set('number', 100)
+    .save()
+  console.log(hello.get('objectId'))
+
+  await hello
+    .set('number', 200)
+    .save()
+
+  console.log(hello.get('number'))
+
+  const query = ncmb.Query('HelloDeno')
+  query.equalTo('objectId', 'ypk03ZHeJxjSnSM1')
+  query.limit(1)
+  const results = await query.fetchAll()
+  console.log(results)
+})();
+```
+
+VS Codeなどで入力補完が使えます。
+
+![](images/type_suggest_1.png)
+
+![](images/type_suggest_2.png)
 
 ## License
 
