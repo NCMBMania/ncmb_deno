@@ -5,7 +5,9 @@ import NCMBQuery from './libs/query.ts'
 import { HmacSha256 } from "https://deno.land/std/hash/sha256.ts"
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
 
-class NCMB {
+export { NCMBObject, NCMBQuery}
+
+export class NCMB {
   applicationKey: string
   clientKey: string
   fqdn: string
@@ -20,18 +22,26 @@ class NCMB {
     this.clientKey = clientKey
     this.fqdn = 'mbaas.api.nifcloud.com'
     this.version = '2013-09-01'
-    this.signature = new NCMBSignature(this)
+    this.signature = new NCMBSignature
     this.applicationKeyName = 'X-NCMB-Application-Key'
     this.timestampName = 'X-NCMB-Timestamp'
-    this.request = new NCMBRequest(this)
+    this.request = new NCMBRequest
+    this.initObject()
+  }
+
+  initObject(this: NCMB) {
+    NCMBQuery.ncmb = this
+    NCMBRequest.ncmb = this
+    NCMBSignature.ncmb = this
+    NCMBObject.ncmb = this
   }
 
   Object(name: string): NCMBObject {
-    return new NCMBObject(this, name)
+    return new NCMBObject(name)
   }
 
   Query(name: string): NCMBQuery {
-    return new NCMBQuery(this, name)
+    return new NCMBQuery(name)
   }
 
   path(className: string, objectId: string|null) {
@@ -44,32 +54,29 @@ class NCMB {
   }
 
   sign(str: string) : string {
-    return this.base64(new HmacSha256(this.clientKey).update(str));
+    const hmac = new HmacSha256(this.clientKey);
+    return this.base64(hmac.update(str).digest());
   }
-
-  base64(buffer: ArrayBuffer): string {
-    const bytes = new Uint8Array(buffer);
+  base64(bytes: number[]): string {
     const len = bytes.length
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    const ary = [];
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+    const ary = []
     for (let i = 0; i < len; i+=3) {
-      ary.push(chars[bytes[i] >> 2]);
-      ary.push(chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)]);
-      ary.push(chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)]);
-      ary.push(chars[bytes[i + 2] & 63]);
+      ary.push(chars[bytes[i] >> 2])
+      ary.push(chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)])
+      ary.push(chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)])
+      ary.push(chars[bytes[i + 2] & 63])
     }
-    const str = ary.join('');
-    let result = '';
+    const str = ary.join('')
+    let result = ''
     if ((len % 3) === 2) {
-      result = str.substring(0, str.length - 1) + "=";
+      result = str.substring(0, str.length - 1) + "="
     } else if (len % 3 === 1) {
-      result = str.substring(0, str.length - 2) + "==";
+      result = str.substring(0, str.length - 2) + "=="
     }
-    return result;
+    return result
   }
-
-  fetch(url: string, options: any) {
+  fetch(url: string, options: any): Promise<Response> {
     return fetch(url, options)
   }
 }
-export default NCMB

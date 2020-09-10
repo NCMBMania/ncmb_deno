@@ -1,5 +1,5 @@
 declare class NCMBSignature {
-  _ncmb: NCMB
+  static ncmb: NCMB
   _signatureMethodName: string
   _signatureMethodValue: string
   _signatureVersionName: string

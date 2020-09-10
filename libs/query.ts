@@ -1,15 +1,14 @@
-// @ts-ignore: TS2691
+// @ts-ignore TS2691
 import NCMB from '../ncmb.ts'
-// @ts-ignore: TS2691
+// @ts-ignore TS2691
 import NCMBObject from './object.ts'
 
 class NCMBQuery {
-  _ncmb: NCMB
+  static ncmb: NCMB
   _className: string
   _queries: { [s: string]: any }
 
-  constructor(ncmb: NCMB, name: string) {
-    this._ncmb = ncmb
+  constructor(name: string) {
     this._className = name
     this._queries = {}
   }
@@ -49,7 +48,7 @@ class NCMBQuery {
   }
 
   async fetchAll(): Promise<NCMBObject[]> {
-    return await this._ncmb.request.get(this._className, this._queries)
+    return await NCMBQuery.ncmb.request.get(this._className, this._queries)
   }
 
   async fetch(): Promise<NCMBObject|null> {

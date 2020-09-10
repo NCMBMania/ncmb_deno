@@ -1,13 +1,12 @@
-// @ts-ignore: TS2691
+// @ts-ignore TS2691
 import NCMB from '../ncmb.ts'
 
 class NCMBObject {
-  _ncmb: NCMB
+  static ncmb: NCMB
   _name: string
   _fields: { [s: string]: any }
 
-  constructor(ncmb: NCMB, name: string) {
-    this._ncmb = ncmb
+  constructor(name: string) {
     this._name = name
     this._fields = {}
   }
@@ -30,7 +29,7 @@ class NCMBObject {
 
   async save(): Promise<NCMBObject> {
     const method = this._fields.objectId ? 'put' : 'post'
-    const json = await this._ncmb.request[method](this._name, this._fields, this._fields.objectId)
+    const json = await NCMBObject.ncmb.request[method](this._name, this._fields, this._fields.objectId)
     this.sets(json)
     return this
   }

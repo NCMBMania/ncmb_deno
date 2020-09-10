@@ -37,21 +37,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var NCMBRequest = /** @class */ (function () {
-    function NCMBRequest(ncmb) {
-        this._ncmb = ncmb;
+    function NCMBRequest() {
     }
     NCMBRequest.prototype.get = function (className, queries) {
         if (queries === void 0) { queries = {}; }
         return __awaiter(this, void 0, void 0, function () {
             var result;
-            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.exec('GET', className, queries)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.results.map(function (o) {
-                                var obj = _this._ncmb.Object(className);
+                                var obj = NCMBRequest.ncmb.Object(className);
                                 obj.sets(o);
                                 return obj;
                             })];
@@ -98,21 +96,20 @@ var NCMBRequest = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         time = (new Date).toISOString();
-                        sig = this._ncmb.signature.create(method, time, className, queries, objectId);
+                        sig = NCMBRequest.ncmb.signature.create(method, time, className, queries, objectId);
                         headers = {
                             'X-NCMB-Signature': sig,
                             'Content-Type': 'application/json'
                         };
-                        headers[this._ncmb.applicationKeyName] = this._ncmb.applicationKey;
-                        headers[this._ncmb.timestampName] = time;
-                        return [4 /*yield*/, this._ncmb.fetch(this._ncmb.url(className, queries, objectId), {
+                        headers[NCMBRequest.ncmb.applicationKeyName] = NCMBRequest.ncmb.applicationKey;
+                        headers[NCMBRequest.ncmb.timestampName] = time;
+                        return [4 /*yield*/, NCMBRequest.ncmb.fetch(NCMBRequest.ncmb.url(className, queries, objectId), {
                                 method: method,
                                 headers: headers,
                                 body: ['POST', 'PUT'].indexOf(method) > -1 ? this.data(data) : null
                             })];
                     case 1:
                         res = _a.sent();
-                        console.log(res);
                         return [4 /*yield*/, res.json()];
                     case 2:
                         json = _a.sent();

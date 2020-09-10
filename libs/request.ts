@@ -1,28 +1,25 @@
-/// <reference types="node" />
-// @ts-ignore: TS2691
+// @ts-ignore TS2691
 import NCMB from '../ncmb.ts'
+// @ts-ignore TS2691
+import NCMBObject from './object.ts'
 
 class NCMBRequest {
-  _ncmb: NCMB
-
-  constructor(ncmb: NCMB) {
-    this._ncmb = ncmb
-  }
+  static ncmb: NCMB
   
-  async get(className: string, queries = {}) {
+  async get(className: string, queries = {}): Promise<NCMBObject[]> {
     const result = await this.exec('GET', className, queries)
     return result.results.map((o: { [s: string]: any }) => {
-      const obj = this._ncmb.Object(className)
+      const obj = NCMBRequest.ncmb.Object(className)
       obj.sets(o)
       return obj
     })
   }
   
-  async post(className: string, data = {}) {
+  async post(className: string, data = {}): Promise<{ [s: string]: any }> {
     return await this.exec('POST', className, {}, data)
   }
   
-  async put(className: string, data = {}, objectId: string) {
+  async put(className: string, data = {}, objectId: string): Promise<{ [s: string]: any }> {
     return await this.exec('PUT', className, {}, data, objectId)
   }
   
@@ -35,15 +32,15 @@ class NCMBRequest {
   
   async exec(method: string, className: string, queries: { [s: string]: any } = {}, data:{ [s: string]: any } = {}, objectId: string|null = null) {
     const time = (new Date).toISOString()
-    const sig = this._ncmb.signature.create(method, time, className, queries, objectId)
+    const sig = NCMBRequest.ncmb.signature.create(method, time, className, queries, objectId)
     const headers: { [s: string]: any } = {
       'X-NCMB-Signature': sig,
       'Content-Type': 'application/json'
     }
-    headers[this._ncmb.applicationKeyName] = this._ncmb.applicationKey
-    headers[this._ncmb.timestampName] = time
+    headers[NCMBRequest.ncmb.applicationKeyName] = NCMBRequest.ncmb.applicationKey
+    headers[NCMBRequest.ncmb.timestampName] = time
     
-    const res:Response = await this._ncmb.fetch(this._ncmb.url(className, queries, objectId), {
+    const res = await NCMBRequest.ncmb.fetch(NCMBRequest.ncmb.url(className, queries, objectId), {
       method: method,
       headers: headers,
       body: ['POST', 'PUT'].indexOf(method) > -1 ? this.data(data) : null

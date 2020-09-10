@@ -11,9 +11,10 @@
     "generateCpuProfile": "profile.cpuprofile",
     "jsx": "react",
     "jsxFactory": "React.createElement",
-    "lib": ["es2015"],
+    "lib": ["ES2020"],
     "types": [
-      "node"
+      "node",
+      "node-fetch"
     ],
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": true,

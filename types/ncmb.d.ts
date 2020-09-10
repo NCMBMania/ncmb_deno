@@ -1,3 +1,7 @@
+/// <reference path="./request.d.ts"/>
+/// <reference path="./query.d.ts"/>
+/// <reference path="./object.d.ts"/>
+/// <reference path="./signature.d.ts"/>
 declare class NCMB {
   applicationKey: string
   clientKey: string
@@ -8,12 +12,12 @@ declare class NCMB {
   signature: NCMBSignature
   request: NCMBRequest
   constructor(applicationKey: string, clientKey: string)
-  initObjects(): void
+  initObject(ncmb: NCMB): void
   Object(name: string): NCMBObject
   Query(name: string): NCMBQuery
   path(className: string, objectId: string|null): string
-  url(className: string, queries:{ [s: string]: any }, objectId: string|null)
+  url(className: string, queries:{ [s: string]: any }, objectId: string|null): string
   base64(buffer: ArrayBuffer): string
   sign(str: string): string
-  fetch(url: string, options: any): Response
+  fetch(url: string, options: any): Promise<Response>
 }

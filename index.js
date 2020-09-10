@@ -1,9 +1,12 @@
 "use strict";
 exports.__esModule = true;
+exports.NCMB = exports.NCMBQuery = exports.NCMBObject = void 0;
 var object_1 = require("./libs/object");
+exports.NCMBObject = object_1["default"];
 var signature_1 = require("./libs/signature");
 var request_1 = require("./libs/request");
 var query_1 = require("./libs/query");
+exports.NCMBQuery = query_1["default"];
 var crypto = require("crypto");
 var node_fetch_1 = require("node-fetch");
 var NCMB = /** @class */ (function () {
@@ -12,19 +15,23 @@ var NCMB = /** @class */ (function () {
         this.clientKey = clientKey;
         this.fqdn = 'mbaas.api.nifcloud.com';
         this.version = '2013-09-01';
-        this.initObjects();
         this.applicationKeyName = 'X-NCMB-Application-Key';
         this.timestampName = 'X-NCMB-Timestamp';
+        this.signature = new signature_1["default"];
+        this.request = new request_1["default"];
+        this.initObject();
     }
-    NCMB.prototype.initObjects = function () {
-        this.signature = new signature_1["default"](this);
-        this.request = new request_1["default"](this);
+    NCMB.prototype.initObject = function () {
+        query_1["default"].ncmb = this;
+        request_1["default"].ncmb = this;
+        signature_1["default"].ncmb = this;
+        object_1["default"].ncmb = this;
     };
     NCMB.prototype.Object = function (name) {
-        return new object_1["default"](this, name);
+        return new object_1["default"](name);
     };
     NCMB.prototype.Query = function (name) {
-        return new query_1["default"](this, name);
+        return new query_1["default"](name);
     };
     NCMB.prototype.path = function (className, objectId) {
         return "/" + this.version + "/classes/" + className + "/" + (objectId || '');
@@ -64,4 +71,4 @@ var NCMB = /** @class */ (function () {
     };
     return NCMB;
 }());
-exports["default"] = NCMB;
+exports.NCMB = NCMB;

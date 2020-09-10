@@ -1,5 +1,5 @@
 declare class NCMBQuery {
-  _ncmb: NCMB
+  static ncmb: NCMB
   _className: string
   _queries: { [s: string]: any }
   constructor(ncmb: NCMB, name: string)

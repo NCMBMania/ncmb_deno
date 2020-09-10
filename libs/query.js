@@ -37,8 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var NCMBQuery = /** @class */ (function () {
-    function NCMBQuery(ncmb, name) {
-        this._ncmb = ncmb;
+    function NCMBQuery(name) {
         this._className = name;
         this._queries = {};
     }
@@ -76,7 +75,7 @@ var NCMBQuery = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this._ncmb.request.get(this._className, this._queries)];
+                    case 0: return [4 /*yield*/, NCMBQuery.ncmb.request.get(this._className, this._queries)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });

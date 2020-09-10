@@ -15,19 +15,13 @@ denoをインストールします。
 オブジェクトを保存するコードです。 `test.ts` として保存してください。
 
 ```js
-import NCMB from 'https://raw.githubusercontent.com/goofmint/ncmb_deno/master/ncmb.ts'
-
-// 設定をJSONにしている場合
-import { readJson } from 'https://deno.land/std/fs/read_json.ts'
-const config = await readJson('./config.json') as { [s: string]: string }
-const applicationKey = config.applicationKey
-const clientKey = config.clientKey
+import { NCMB, NCMBObject } from 'https://raw.githubusercontent.com/goofmint/ncmb_deno/master/ncmb.ts'
 
 // 初期化
-const ncmb = new NCMB(applicationKey, clientKey)
+const ncmb = new NCMB('YOUR_APPLICATION_KEY', 'YOUR_CLIENT_KEY')
 
 // オブジェクト作成
-const hello = ncmb.Object('HelloDeno')
+const hello = new NCMBObject('HelloDeno')
 
 // 値を設定して保存
 await hello
@@ -60,6 +54,11 @@ npm install ncmb_ts -S
 基本的に使い方は変わりませんが、ルートでのasync/awaitはサポートされていないので注意してください。
 
 ```ts
+import { NCMB, NCMBObject } from 'ncmb_ts'
+
+const ncmb = new NCMB('YOUR_APPLICATION_KEY', 'YOUR_CLIENT_KEY')
+const hello = new NCMBObject('HelloDeno');
+
 (async () =>  {
   await hello
     .set('message', 'Hello world')

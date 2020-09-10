@@ -1,12 +1,13 @@
-/// <reference types="node" />
 import NCMBObject from './libs/object'
 import NCMBSignature from './libs/signature'
 import NCMBRequest from './libs/request'
 import NCMBQuery from './libs/query'
 import * as crypto from 'crypto';
-import fetch from 'node-fetch'
+import fetch, { Response } from 'node-fetch'
 
-class NCMB {
+export { NCMBObject, NCMBQuery}
+
+export class NCMB {
   applicationKey: string
   clientKey: string
   fqdn: string
@@ -21,22 +22,26 @@ class NCMB {
     this.clientKey = clientKey
     this.fqdn = 'mbaas.api.nifcloud.com'
     this.version = '2013-09-01'
-    this.initObjects()
     this.applicationKeyName = 'X-NCMB-Application-Key'
     this.timestampName = 'X-NCMB-Timestamp'
+    this.signature = new NCMBSignature
+    this.request = new NCMBRequest
+    this.initObject()
   }
 
-  initObjects() {
-    this.signature = new NCMBSignature(this)
-    this.request = new NCMBRequest(this)
+  initObject(this: NCMB) {
+    NCMBQuery.ncmb = this
+    NCMBRequest.ncmb = this
+    NCMBSignature.ncmb = this
+    NCMBObject.ncmb = this
   }
 
   Object(name: string): NCMBObject {
-    return new NCMBObject(this, name)
+    return new NCMBObject(name)
   }
 
   Query(name: string): NCMBQuery {
-    return new NCMBQuery(this, name)
+    return new NCMBQuery(name)
   }
 
   path(className: string, objectId: string|null): string {
@@ -74,9 +79,9 @@ class NCMB {
     return this.base64(hmac.update(str).digest())
   }
 
-  fetch(url: string, options: any): Response {
+
+  fetch(url: string, options: any): Promise<Response> {
     return fetch(url, options);
   }
-}
 
-export default NCMB
+}

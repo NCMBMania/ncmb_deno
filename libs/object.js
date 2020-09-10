@@ -37,8 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var NCMBObject = /** @class */ (function () {
-    function NCMBObject(ncmb, name) {
-        this._ncmb = ncmb;
+    function NCMBObject(name) {
         this._name = name;
         this._fields = {};
     }
@@ -62,7 +61,7 @@ var NCMBObject = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         method = this._fields.objectId ? 'put' : 'post';
-                        return [4 /*yield*/, this._ncmb.request[method](this._name, this._fields, this._fields.objectId)];
+                        return [4 /*yield*/, NCMBObject.ncmb.request[method](this._name, this._fields, this._fields.objectId)];
                     case 1:
                         json = _a.sent();
                         this.sets(json);
