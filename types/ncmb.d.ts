@@ -13,8 +13,6 @@ declare class NCMB {
   request: NCMBRequest
   constructor(applicationKey: string, clientKey: string)
   initObject(ncmb: NCMB): void
-  Object(name: string): NCMBObject
-  Query(name: string): NCMBQuery
   path(className: string, objectId: string|null): string
   url(className: string, queries:{ [s: string]: any }, objectId: string|null): string
   base64(buffer: ArrayBuffer): string

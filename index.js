@@ -1,12 +1,14 @@
 "use strict";
 exports.__esModule = true;
-exports.NCMB = exports.NCMBQuery = exports.NCMBObject = void 0;
+exports.NCMB = exports.NCMBInstallation = exports.NCMBQuery = exports.NCMBObject = void 0;
 var object_1 = require("./libs/object");
 exports.NCMBObject = object_1["default"];
 var signature_1 = require("./libs/signature");
 var request_1 = require("./libs/request");
 var query_1 = require("./libs/query");
 exports.NCMBQuery = query_1["default"];
+var installation_node_1 = require("./libs/installation_node");
+exports.NCMBInstallation = installation_node_1["default"];
 var crypto = require("crypto");
 var node_fetch_1 = require("node-fetch");
 var NCMB = /** @class */ (function () {
@@ -26,14 +28,12 @@ var NCMB = /** @class */ (function () {
         request_1["default"].ncmb = this;
         signature_1["default"].ncmb = this;
         object_1["default"].ncmb = this;
-    };
-    NCMB.prototype.Object = function (name) {
-        return new object_1["default"](name);
-    };
-    NCMB.prototype.Query = function (name) {
-        return new query_1["default"](name);
+        installation_node_1["default"].ncmb = this;
     };
     NCMB.prototype.path = function (className, objectId) {
+        if (['installations', 'users', 'files', 'push'].indexOf(className) > -1) {
+            return "/" + this.version + "/" + className + "/" + (objectId || '');
+        }
         return "/" + this.version + "/classes/" + className + "/" + (objectId || '');
     };
     NCMB.prototype.url = function (className, queries, objectId) {

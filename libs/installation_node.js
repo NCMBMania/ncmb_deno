@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,48 +49,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var NCMBObject = /** @class */ (function () {
-    function NCMBObject(name) {
-        this._name = name;
-        this._fields = {};
-        this._required = [];
+var object_1 = require("./object");
+var NCMBInstallation = /** @class */ (function (_super) {
+    __extends(NCMBInstallation, _super);
+    function NCMBInstallation() {
+        var _this = _super.call(this, 'installations') || this;
+        _this._required = ['deviceToken', 'deviceType'];
+        return _this;
     }
-    NCMBObject.prototype.sets = function (obj) {
-        for (var key in obj) {
-            this.set(key, obj[key]);
-        }
-        return this;
-    };
-    NCMBObject.prototype.set = function (key, value) {
-        this._fields[key] = value;
-        return this;
-    };
-    NCMBObject.prototype.get = function (k) {
-        return this._fields[k];
-    };
-    NCMBObject.prototype.save = function () {
+    NCMBInstallation.prototype.save = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _i, _a, key, value, method, json;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        for (_i = 0, _a = this._required; _i < _a.length; _i++) {
-                            key = _a[_i];
-                            value = this.get(key);
-                            if (!value || value === '') {
-                                throw new Error(key + " is required.");
-                            }
-                        }
-                        method = this._fields.objectId ? 'put' : 'post';
-                        return [4 /*yield*/, NCMBObject.ncmb.request[method](this._name, this._fields, this._fields.objectId)];
-                    case 1:
-                        json = _b.sent();
-                        this.sets(json);
-                        return [2 /*return*/, this];
+            return __generator(this, function (_a) {
+                if (['ios', 'android'].indexOf(this.get('deviceType')) === -1) {
+                    throw new Error("deviceType is only ios or android");
                 }
+                return [2 /*return*/, _super.prototype.save.call(this)];
             });
         });
     };
-    return NCMBObject;
-}());
-exports["default"] = NCMBObject;
+    return NCMBInstallation;
+}(object_1["default"]));
+exports["default"] = NCMBInstallation;

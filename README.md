@@ -86,6 +86,27 @@ VS Codeなどで入力補完が使えます。
 
 ![](images/type_suggest_2.png)
 
+### デバイストークン
+
+#### 登録
+
+```js
+const installation = new NCMBInstallation
+
+await installation
+  .set('deviceToken', 'aaaa')
+  .set('deviceType', 'android')
+  .save();
+```
+
+#### 更新
+
+```js
+await installation
+  .set('deviceToken', 'bbbb')
+  .save();
+```
+
 ## License
 
 MIT.

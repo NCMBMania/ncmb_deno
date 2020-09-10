@@ -2,10 +2,12 @@ import NCMBObject from './libs/object.ts'
 import NCMBSignature from './libs/signature.ts'
 import NCMBRequest from './libs/request.ts'
 import NCMBQuery from './libs/query.ts'
+import NCMBInstallation from './libs/installation.ts'
+
 import { HmacSha256 } from "https://deno.land/std/hash/sha256.ts"
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
 
-export { NCMBObject, NCMBQuery}
+export { NCMBObject, NCMBQuery, NCMBInstallation}
 
 export class NCMB {
   applicationKey: string
@@ -34,17 +36,13 @@ export class NCMB {
     NCMBRequest.ncmb = this
     NCMBSignature.ncmb = this
     NCMBObject.ncmb = this
+    NCMBInstallation.ncmb = this
   }
 
-  Object(name: string): NCMBObject {
-    return new NCMBObject(name)
-  }
-
-  Query(name: string): NCMBQuery {
-    return new NCMBQuery(name)
-  }
-
-  path(className: string, objectId: string|null) {
+  path(className: string, objectId: string|null): string {
+    if (['installations', 'users', 'files', 'push'].indexOf(className) > -1) {
+      return `/${this.version}/${className}/${objectId || ''}`;
+    }
     return `/${this.version}/classes/${className}/${objectId || ''}`;
   }
 
