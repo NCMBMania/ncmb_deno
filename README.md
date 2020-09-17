@@ -25,9 +25,9 @@ const hello = new NCMBObject('HelloDeno')
 
 // 値を設定して保存
 await hello
-  .set('message', 'Hello world')
-  .set('number', 100)
-  .save()
+- .set('message', 'Hello world')
+- .set('number', 100)
+- .save()
 
 // 保存できていればオブジェクトIDが出力されます
 console.log(hello.get('objectId'))
@@ -35,14 +35,14 @@ console.log(hello.get('objectId'))
 // ACLの使い方
 const acl = new NCMBAcl()
 acl
-  .setPublicReadAccess(true)
-  .setPublicWriteAccess(false)
+- .setPublicReadAccess(true)
+- .setPublicWriteAccess(false)
 const hello2 = new NCMBObject('HelloDeno')
 await hello2
-  .set('message', 'Hello world')
-  .set('number', 100)
-  .set('acl', acl) 
-  .save()
+- .set('message', 'Hello world')
+- .set('number', 100)
+- .set('acl', acl) 
+- .save()
 ```
 
 #### ACLについて
@@ -57,6 +57,8 @@ ACLは次のメソッドがあります。
 - setRoleWriteAccess(role: string, bol: boolean): NCMBAcl
 
 ### 実行
+
+**Denoの場合**
 
 `--allow-net` は必須です。 `--allow-read` は設定ファイルを読み込む際に必須です。
 
@@ -83,23 +85,23 @@ const ncmb = new NCMB('YOUR_APPLICATION_KEY', 'YOUR_CLIENT_KEY')
 const hello = new NCMBObject('HelloDeno');
 
 (async () =>  {
-  await hello
-    .set('message', 'Hello world')
-    .set('number', 100)
-    .save()
-  console.log(hello.get('objectId'))
+- await hello
+-   .set('message', 'Hello world')
+-   .set('number', 100)
+-   .save()
+- console.log(hello.get('objectId'))
 
-  await hello
-    .set('number', 200)
-    .save()
+- await hello
+-   .set('number', 200)
+-   .save()
 
-  console.log(hello.get('number'))
+- console.log(hello.get('number'))
 
-  const query = ncmb.Query('HelloDeno')
-  query.equalTo('objectId', 'ypk03ZHeJxjSnSM1')
-  query.limit(1)
-  const results = await query.fetchAll()
-  console.log(results)
+- const query = ncmb.Query('HelloDeno')
+- query.equalTo('objectId', 'ypk03ZHeJxjSnSM1')
+- query.limit(1)
+- const results = await query.fetchAll()
+- console.log(results)
 })();
 ```
 
@@ -108,6 +110,39 @@ VS Codeなどで入力補完が使えます。
 ![](images/type_suggest_1.png)
 
 ![](images/type_suggest_2.png)
+
+### データストア
+
+#### 検索
+
+```js
+const query = new NCMBQuery('QueryTest');
+const results = await query.in('array', ['c']).fetchAll()
+console.log(results.length)
+console.log(results[0].get('objectId'))
+```
+
+**利用できるオペランド**
+
+- equalTo(key: string, value:any): NCMBQuery
+- setOperand(key: string, value:any, ope: string|null): NCMBQuery
+- notEqualTo(key: string, value:any): NCMBQuery
+- lessThan(key: string, value: number | Date): NCMBQuery
+- lessThanOrEqualTo(key: string, value: number | Date): NCMBQuery
+- greaterThan(key: string, value: number | Date): NCMBQuery
+- greaterThanOrEqualTo(key: string, value: number | Date): NCMBQuery
+- in(key: string, values: any[]): NCMBQuery
+- notIn(key: string, values: any[]): NCMBQuery
+- exists(key: string, exist: boolean | null): NCMBQuery
+- regularExpressionTo(key: string, regex: string): NCMBQuery
+- inArray(key: string, values: any): NCMBQuery
+- notInArray(key: string, values: any): NCMBQuery
+- allInArray(key: string, values: any): NCMBQuery
+- near(key: string, location: NCMBGeoPoint): NCMBQuery
+- withinKilometers(key: string, location: NCMBGeoPoint, maxDistance: number): NCMBQuery
+- withinMiles(key: string, location: NCMBGeoPoint, maxDistance: number): NCMBQuery
+- withinRadians(key: string, location: NCMBGeoPoint, maxDistance: number): NCMBQuery
+- withinSquare(key: string, southWestVertex: NCMBGeoPoint, northEastVertex: NCMBGeoPoint): NCMBQuery
 
 ### 会員管理
 
@@ -125,17 +160,33 @@ const user = await NCMBUser.login('tester', 'tester')
 const installation = new NCMBInstallation
 
 await installation
-  .set('deviceToken', 'aaaa')
-  .set('deviceType', 'android')
-  .save();
+- .set('deviceToken', 'aaaa')
+- .set('deviceType', 'android')
+- .save();
 ```
 
 #### 更新
 
 ```js
 await installation
-  .set('deviceToken', 'bbbb')
-  .save();
+- .set('deviceToken', 'bbbb')
+- .save();
+```
+
+### 位置情報
+
+NCMBGeoPointを使います。
+
+```js
+const geo = new NCMBGeoPoint(35.0, 100.0);
+const hello = new NCMBObject('HelloDeno')
+await hello
+  .set('message', 'Hello world')
+  .set('number', 100)
+  .set('acl', acl) 
+  .set('hello1', hello)
+  .set('geo', geo)
+  .save()
 ```
 
 ## License

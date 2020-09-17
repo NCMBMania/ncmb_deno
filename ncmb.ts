@@ -5,11 +5,12 @@ import NCMBQuery from './libs/query.ts'
 import NCMBInstallation from './libs/installation.ts'
 import NCMBUser from './libs/user.ts'
 import NCMBAcl from './libs/acl.ts'
+import NCMBGeoPoint from './libs/geopoint.ts'
 
 import { HmacSha256 } from "https://deno.land/std/hash/sha256.ts"
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
 
-export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl}
+export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint}
 
 export class NCMB {
   applicationKey: string

@@ -25,14 +25,18 @@ class NCMBRequest {
     return await this.exec('PUT', className, {}, data, objectId)
   }
   
-  data(data: { [s: string]: any } = {}) {
+  data(params: { [s: string]: any } = {}) {
+    const data = {...params}
     delete data.createDate
     delete data.updateDate
     delete data.objectId
     for (const key in data) {
       const value = data[key]
-      if (value instanceof NCMBAcl) {
-        data[key] = (<NCMBAcl> value).toJSON()
+      if (value instanceof Date) {
+        data[key] = {
+          __type: 'Date',
+          iso: (<Date> value).toISOString()
+        }
       }
     }
     return JSON.stringify(data)

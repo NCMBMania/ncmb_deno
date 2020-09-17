@@ -1,4 +1,4 @@
-import { NCMB, NCMBObject } from '../index'
+import { NCMB, NCMBObject, NCMBQuery, NCMBAcl, NCMBGeoPoint } from '../index'
 const config = require('../config.json');
 const applicationKey = config.applicationKey
 const clientKey = config.clientKey
@@ -12,14 +12,27 @@ const hello = new NCMBObject('HelloDeno');
     .set('number', 100)
     .save()
   console.log(hello.get('objectId'))
-
+  
   await hello
     .set('number', 200)
     .save()
 
   console.log(hello.get('number'))
+  const acl = new NCMBAcl()
+  acl
+    .setPublicReadAccess(true)
+    .setPublicWriteAccess(false)
+  const geo = new NCMBGeoPoint(35.0, 100.0);
+  const hello2 = new NCMBObject('HelloDeno')
+  await hello2
+    .set('message', 'Hello world')
+    .set('number', 100)
+    .set('acl', acl) 
+    .set('hello1', hello)
+    .set('geo', geo)
+    .save()
 
-  const query = ncmb.Query('HelloDeno')
+  const query = new NCMBQuery('HelloDeno')
   query.equalTo('objectId', 'ypk03ZHeJxjSnSM1')
   query.limit(1)
   const results = await query.fetchAll()

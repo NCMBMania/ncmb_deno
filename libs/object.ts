@@ -27,6 +27,8 @@ class NCMBObject {
   set(key: string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
     if (['createDate', 'updateDate'].indexOf(key) > -1) {
       this._fields[key] = new Date(value)
+    } else if (value && value.__type === 'Date' && value.iso) {
+      this._fields[key] = new Date(value.iso)
     } else {
       this._fields[key] = value
     }
@@ -48,6 +50,18 @@ class NCMBObject {
     const json = await NCMBObject.ncmb.request[method](this._name, this._fields, this._fields.objectId)
     this.sets(json)
     return this
+  }
+
+  toJSON(): { [s: string]: string } {
+    console.log('toJSON', this._fields)
+    if (!this.get('objectId')) {
+      throw new Error('Save object data before add themselve as Pointer.')
+    }
+    return {
+      __type: 'Pointer',
+      objectId: this.get('objectId'),
+      className: this._name
+    }  
   }
 }
 export default NCMBObject

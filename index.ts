@@ -4,11 +4,13 @@ import NCMBRequest from './libs/request'
 import NCMBQuery from './libs/query'
 import NCMBInstallation from './libs/installation'
 import NCMBUser from './libs/user'
+import NCMBAcl from './libs/acl'
+import NCMBGeoPoint from './libs/geopoint'
 
 import * as crypto from 'crypto';
 import fetch, { Response } from 'node-fetch'
 
-export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser }
+export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint }
 
 export class NCMB {
   applicationKey: string
