@@ -3,11 +3,13 @@ import NCMBSignature from './libs/signature.ts'
 import NCMBRequest from './libs/request.ts'
 import NCMBQuery from './libs/query.ts'
 import NCMBInstallation from './libs/installation.ts'
+import NCMBUser from './libs/user.ts'
+import NCMBAcl from './libs/acl.ts'
 
 import { HmacSha256 } from "https://deno.land/std/hash/sha256.ts"
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
 
-export { NCMBObject, NCMBQuery, NCMBInstallation}
+export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl}
 
 export class NCMB {
   applicationKey: string
@@ -18,6 +20,7 @@ export class NCMB {
   timestampName: string
   signature: NCMBSignature
   request: NCMBRequest
+  sessionToken: string | null = null
 
   constructor(applicationKey: string, clientKey: string) {
     this.applicationKey = applicationKey
@@ -37,9 +40,13 @@ export class NCMB {
     NCMBSignature.ncmb = this
     NCMBObject.ncmb = this
     NCMBInstallation.ncmb = this
+    NCMBUser.ncmb = this
   }
 
   path(className: string, objectId: string|null): string {
+    if (className.indexOf('/') === 0) {
+      return `/${this.version}${className}/${objectId || ''}`;
+    }
     if (['installations', 'users', 'files', 'push'].indexOf(className) > -1) {
       return `/${this.version}/${className}/${objectId || ''}`;
     }
@@ -47,7 +54,10 @@ export class NCMB {
   }
 
   url(className: string, queries:{ [s: string]: any } = {}, objectId: string|null) {
-    const query = Object.keys(queries).sort().map(k => `${k}=${encodeURI(JSON.stringify(queries[k]))}`).join('&');
+    const query = Object.keys(queries).sort().map(k => {
+      const val = typeof queries[k] === 'object' ? JSON.stringify(queries[k]) : queries[k]
+      return `${k}=${encodeURI(val)}`
+    }).join('&');
     return `https://${this.fqdn}${this.path(className, objectId)}${query ? '?' + query : ''}`;
   }
 

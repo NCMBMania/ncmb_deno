@@ -2,6 +2,8 @@
 import NCMB from '../ncmb.ts'
 // @ts-ignore TS2691
 import NCMBObject from './object.ts'
+// @ts-ignore TS2691
+import NCMBAcl from './acl.ts'
 
 class NCMBRequest {
   static ncmb: NCMB
@@ -9,7 +11,7 @@ class NCMBRequest {
   async get(className: string, queries = {}): Promise<NCMBObject[]> {
     const result = await this.exec('GET', className, queries)
     return result.results.map((o: { [s: string]: any }) => {
-      const obj = NCMBRequest.ncmb.Object(className)
+      const obj = new NCMBObject(className)
       obj.sets(o)
       return obj
     })
@@ -27,6 +29,12 @@ class NCMBRequest {
     delete data.createDate
     delete data.updateDate
     delete data.objectId
+    for (const key in data) {
+      const value = data[key]
+      if (value instanceof NCMBAcl) {
+        data[key] = (<NCMBAcl> value).toJSON()
+      }
+    }
     return JSON.stringify(data)
   }
   
@@ -39,7 +47,9 @@ class NCMBRequest {
     }
     headers[NCMBRequest.ncmb.applicationKeyName] = NCMBRequest.ncmb.applicationKey
     headers[NCMBRequest.ncmb.timestampName] = time
-    
+    if (NCMBRequest.ncmb.sessionToken) {
+      headers[NCMBRequest.ncmb.timestampName]
+    }
     const res = await NCMBRequest.ncmb.fetch(NCMBRequest.ncmb.url(className, queries, objectId), {
       method: method,
       headers: headers,

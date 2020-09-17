@@ -4,9 +4,19 @@ import NCMB from '../ncmb.ts'
 import NCMBObject from './object.ts'
 
 class NCMBInstallation extends NCMBObject {
+  static ncmb: NCMB
+
   constructor() {
     super('installations')
     super._required = ['deviceToken', 'deviceType']
+  }
+
+  set(key: string, value: any): NCMBInstallation {
+    return super.set(key, value)
+  }
+  
+  get(k: string): any {
+    return super.get(k)
   }
 
   async save(): Promise<NCMBObject | NCMBInstallation> {

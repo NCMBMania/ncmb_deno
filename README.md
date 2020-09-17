@@ -15,7 +15,7 @@ denoをインストールします。
 オブジェクトを保存するコードです。 `test.ts` として保存してください。
 
 ```js
-import { NCMB, NCMBObject } from 'https://raw.githubusercontent.com/goofmint/ncmb_deno/master/ncmb.ts'
+import { NCMB, NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser } from 'https://raw.githubusercontent.com/goofmint/ncmb_deno/master/ncmb.ts'
 
 // 初期化
 const ncmb = new NCMB('YOUR_APPLICATION_KEY', 'YOUR_CLIENT_KEY')
@@ -31,7 +31,30 @@ await hello
 
 // 保存できていればオブジェクトIDが出力されます
 console.log(hello.get('objectId'))
+
+// ACLの使い方
+const acl = new NCMBAcl()
+acl
+  .setPublicReadAccess(true)
+  .setPublicWriteAccess(false)
+const hello2 = new NCMBObject('HelloDeno')
+await hello2
+  .set('message', 'Hello world')
+  .set('number', 100)
+  .set('acl', acl) 
+  .save()
 ```
+
+#### ACLについて
+
+ACLは次のメソッドがあります。
+
+- setPublicReadAccess(bol: boolean): NCMBAcl
+- setPublicWriteAccess(bol: boolean): NCMBAcl
+- setUserReadAccess(user: NCMBUser, bol: boolean): NCMBAcl
+- setUserWriteAccess(user: NCMBUser, bol: boolean): NCMBAcl
+- setRoleReadAccess(role: string, bol: boolean): NCMBAcl
+- setRoleWriteAccess(role: string, bol: boolean): NCMBAcl
 
 ### 実行
 
@@ -54,7 +77,7 @@ npm install ncmb_ts -S
 基本的に使い方は変わりませんが、ルートでのasync/awaitはサポートされていないので注意してください。
 
 ```ts
-import { NCMB, NCMBObject } from 'ncmb_ts'
+import { NCMB, NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser } from 'ncmb_ts'
 
 const ncmb = new NCMB('YOUR_APPLICATION_KEY', 'YOUR_CLIENT_KEY')
 const hello = new NCMBObject('HelloDeno');
@@ -85,6 +108,14 @@ VS Codeなどで入力補完が使えます。
 ![](images/type_suggest_1.png)
 
 ![](images/type_suggest_2.png)
+
+### 会員管理
+
+#### ログイン（ID/パスワード）
+
+```js
+const user = await NCMBUser.login('tester', 'tester')
+```
 
 ### デバイストークン
 

@@ -2,11 +2,13 @@ import NCMBObject from './libs/object'
 import NCMBSignature from './libs/signature'
 import NCMBRequest from './libs/request'
 import NCMBQuery from './libs/query'
-import NCMBInstallation from './libs/installation_node'
+import NCMBInstallation from './libs/installation'
+import NCMBUser from './libs/user'
+
 import * as crypto from 'crypto';
 import fetch, { Response } from 'node-fetch'
 
-export { NCMBObject, NCMBQuery, NCMBInstallation }
+export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser }
 
 export class NCMB {
   applicationKey: string
@@ -17,6 +19,7 @@ export class NCMB {
   timestampName: string
   signature!: NCMBSignature
   request!: NCMBRequest
+  sessionToken: string | null = null
 
   constructor(applicationKey: string, clientKey: string) {
     this.applicationKey = applicationKey
@@ -36,9 +39,13 @@ export class NCMB {
     NCMBSignature.ncmb = this
     NCMBObject.ncmb = this
     NCMBInstallation.ncmb = this
+    NCMBUser.ncmb = this
   }
 
   path(className: string, objectId: string|null): string {
+    if (className.indexOf('/') === 0) {
+      return `/${this.version}${className}/${objectId || ''}`;
+    }
     if (['installations', 'users', 'files', 'push'].indexOf(className) > -1) {
       return `/${this.version}/${className}/${objectId || ''}`;
     }
@@ -46,7 +53,10 @@ export class NCMB {
   }
 
   url(className: string, queries:{ [s: string]: any } = {}, objectId: string|null) {
-    const query = Object.keys(queries).sort().map(k => `${k}=${encodeURI(JSON.stringify(queries[k]))}`).join('&')
+    const query = Object.keys(queries).sort().map(k => {
+      const val = typeof queries[k] === 'object' ? JSON.stringify(queries[k]) : queries[k]
+      return `${k}=${encodeURI(val)}`
+    }).join('&');
     return `https://${this.fqdn}${this.path(className, objectId)}${query ? '?' + query : ''}`
   }
 
