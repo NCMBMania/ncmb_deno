@@ -1,3 +1,5 @@
+"use strict";
+exports.__esModule = true;
 var NCMBAcl = /** @class */ (function () {
     function NCMBAcl() {
         this._fields = {
@@ -49,4 +51,4 @@ var NCMBAcl = /** @class */ (function () {
     };
     return NCMBAcl;
 }());
-export default NCMBAcl;
+exports["default"] = NCMBAcl;

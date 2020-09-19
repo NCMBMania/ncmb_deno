@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,17 +35,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { NCMB, NCMBQuery } from '../index';
+exports.__esModule = true;
+var index_1 = require("../index");
 var config = require('../config.json');
 var applicationKey = config.applicationKey;
 var clientKey = config.clientKey;
-var ncmb = new NCMB(applicationKey, clientKey);
+var ncmb = new index_1.NCMB(applicationKey, clientKey);
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var query, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                query = new NCMBQuery('QueryTest');
+                query = new index_1.NCMBQuery('QueryTest');
                 return [4 /*yield*/, query.equalTo('string', 'Hello').fetchAll()];
             case 1:
                 results = _a.sent();
@@ -58,7 +60,7 @@ var ncmb = new NCMB(applicationKey, clientKey);
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                query = new NCMBQuery('QueryTest');
+                query = new index_1.NCMBQuery('QueryTest');
                 return [4 /*yield*/, query.notEqualTo('string', 'Hello').fetchAll()];
             case 1:
                 results = _a.sent();
@@ -72,7 +74,7 @@ var ncmb = new NCMB(applicationKey, clientKey);
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                query = new NCMBQuery('QueryTest');
+                query = new index_1.NCMBQuery('QueryTest');
                 return [4 /*yield*/, query.lessThan('number', 200).fetchAll()];
             case 1:
                 results = _a.sent();
@@ -86,7 +88,7 @@ var ncmb = new NCMB(applicationKey, clientKey);
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                query = new NCMBQuery('QueryTest');
+                query = new index_1.NCMBQuery('QueryTest');
                 return [4 /*yield*/, query.lessThanOrEqualTo('number', 200).fetchAll()];
             case 1:
                 results = _a.sent();
@@ -100,7 +102,7 @@ var ncmb = new NCMB(applicationKey, clientKey);
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                query = new NCMBQuery('QueryTest');
+                query = new index_1.NCMBQuery('QueryTest');
                 return [4 /*yield*/, query.lessThanOrEqualTo('date', new Date(2020, 8, 16, 9, 0, 0)).fetchAll()];
             case 1:
                 results = _a.sent();
@@ -114,7 +116,7 @@ var ncmb = new NCMB(applicationKey, clientKey);
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                query = new NCMBQuery('QueryTest');
+                query = new index_1.NCMBQuery('QueryTest');
                 return [4 /*yield*/, query.lessThan('date', new Date(2020, 8, 16, 9, 0, 0)).fetchAll()];
             case 1:
                 results = _a.sent();
@@ -128,7 +130,7 @@ var ncmb = new NCMB(applicationKey, clientKey);
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                query = new NCMBQuery('QueryTest');
+                query = new index_1.NCMBQuery('QueryTest');
                 return [4 /*yield*/, query["in"]('array', ['c']).fetchAll()];
             case 1:
                 results = _a.sent();

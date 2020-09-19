@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -45,8 +46,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+exports.__esModule = true;
 // @ts-ignore TS2691
-import NCMBObject from './object.ts';
+var object_ts_1 = require("./object.ts");
 var NCMBRequest = /** @class */ (function () {
     function NCMBRequest() {
     }
@@ -60,7 +62,7 @@ var NCMBRequest = /** @class */ (function () {
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.results.map(function (o) {
-                                var obj = new NCMBObject(className);
+                                var obj = new object_ts_1["default"](className);
                                 obj.sets(o);
                                 return obj;
                             })];
@@ -146,4 +148,4 @@ var NCMBRequest = /** @class */ (function () {
     };
     return NCMBRequest;
 }());
-export default NCMBRequest;
+exports["default"] = NCMBRequest;

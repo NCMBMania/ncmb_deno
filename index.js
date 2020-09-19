@@ -1,14 +1,22 @@
-import NCMBObject from './libs/object';
-import NCMBSignature from './libs/signature';
-import NCMBRequest from './libs/request';
-import NCMBQuery from './libs/query';
-import NCMBInstallation from './libs/installation';
-import NCMBUser from './libs/user';
-import NCMBAcl from './libs/acl';
-import NCMBGeoPoint from './libs/geopoint';
-import * as crypto from 'crypto';
-import fetch from 'node-fetch';
-export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint };
+"use strict";
+exports.__esModule = true;
+exports.NCMB = exports.NCMBGeoPoint = exports.NCMBAcl = exports.NCMBUser = exports.NCMBInstallation = exports.NCMBQuery = exports.NCMBObject = void 0;
+var object_1 = require("./libs/object");
+exports.NCMBObject = object_1["default"];
+var signature_1 = require("./libs/signature");
+var request_1 = require("./libs/request");
+var query_1 = require("./libs/query");
+exports.NCMBQuery = query_1["default"];
+var installation_1 = require("./libs/installation");
+exports.NCMBInstallation = installation_1["default"];
+var user_1 = require("./libs/user");
+exports.NCMBUser = user_1["default"];
+var acl_1 = require("./libs/acl");
+exports.NCMBAcl = acl_1["default"];
+var geopoint_1 = require("./libs/geopoint");
+exports.NCMBGeoPoint = geopoint_1["default"];
+var crypto = require("crypto");
+var node_fetch_1 = require("node-fetch");
 var NCMB = /** @class */ (function () {
     function NCMB(applicationKey, clientKey) {
         this.sessionToken = null;
@@ -18,17 +26,17 @@ var NCMB = /** @class */ (function () {
         this.version = '2013-09-01';
         this.applicationKeyName = 'X-NCMB-Application-Key';
         this.timestampName = 'X-NCMB-Timestamp';
-        this.signature = new NCMBSignature;
-        this.request = new NCMBRequest;
+        this.signature = new signature_1["default"];
+        this.request = new request_1["default"];
         this.initObject();
     }
     NCMB.prototype.initObject = function () {
-        NCMBQuery.ncmb = this;
-        NCMBRequest.ncmb = this;
-        NCMBSignature.ncmb = this;
-        NCMBObject.ncmb = this;
-        NCMBInstallation.ncmb = this;
-        NCMBUser.ncmb = this;
+        query_1["default"].ncmb = this;
+        request_1["default"].ncmb = this;
+        signature_1["default"].ncmb = this;
+        object_1["default"].ncmb = this;
+        installation_1["default"].ncmb = this;
+        user_1["default"].ncmb = this;
     };
     NCMB.prototype.path = function (className, objectId) {
         if (className.indexOf('/') === 0) {
@@ -73,8 +81,8 @@ var NCMB = /** @class */ (function () {
         return this.base64(hmac.update(str).digest());
     };
     NCMB.prototype.fetch = function (url, options) {
-        return fetch(url, options);
+        return node_fetch_1["default"](url, options);
     };
     return NCMB;
 }());
-export { NCMB };
+exports.NCMB = NCMB;

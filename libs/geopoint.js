@@ -1,3 +1,5 @@
+"use strict";
+exports.__esModule = true;
 // @ts-ignore TS2691
 var NCMBGeoPoint = /** @class */ (function () {
     function NCMBGeoPoint(lat, lng) {
@@ -31,4 +33,4 @@ var NCMBGeoPoint = /** @class */ (function () {
     };
     return NCMBGeoPoint;
 }());
-export default NCMBGeoPoint;
+exports["default"] = NCMBGeoPoint;

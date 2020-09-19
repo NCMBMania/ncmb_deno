@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -47,8 +48,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+exports.__esModule = true;
 // @ts-ignore TS2691
-import NCMBObject from './object.ts';
+var object_ts_1 = require("./object.ts");
 var NCMBUser = /** @class */ (function (_super) {
     __extends(NCMBUser, _super);
     function NCMBUser() {
@@ -77,5 +79,5 @@ var NCMBUser = /** @class */ (function (_super) {
         });
     };
     return NCMBUser;
-}(NCMBObject));
-export default NCMBUser;
+}(object_ts_1["default"]));
+exports["default"] = NCMBUser;

@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,12 +35,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { NCMB, NCMBObject, NCMBQuery, NCMBAcl, NCMBGeoPoint } from '../index';
+exports.__esModule = true;
+var index_1 = require("../index");
 var config = require('../config.json');
 var applicationKey = config.applicationKey;
 var clientKey = config.clientKey;
-var ncmb = new NCMB(applicationKey, clientKey);
-var hello = new NCMBObject('HelloDeno');
+var ncmb = new index_1.NCMB(applicationKey, clientKey);
+var hello = new index_1.NCMBObject('HelloDeno');
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var acl, geo, hello2, query, results;
     return __generator(this, function (_a) {
@@ -57,12 +59,12 @@ var hello = new NCMBObject('HelloDeno');
             case 2:
                 _a.sent();
                 console.log(hello.get('number'));
-                acl = new NCMBAcl();
+                acl = new index_1.NCMBAcl();
                 acl
                     .setPublicReadAccess(true)
                     .setPublicWriteAccess(false);
-                geo = new NCMBGeoPoint(35.0, 100.0);
-                hello2 = new NCMBObject('HelloDeno');
+                geo = new index_1.NCMBGeoPoint(35.0, 100.0);
+                hello2 = new index_1.NCMBObject('HelloDeno');
                 return [4 /*yield*/, hello2
                         .set('message', 'Hello world')
                         .set('number', 100)
@@ -72,7 +74,7 @@ var hello = new NCMBObject('HelloDeno');
                         .save()];
             case 3:
                 _a.sent();
-                query = new NCMBQuery('HelloDeno');
+                query = new index_1.NCMBQuery('HelloDeno');
                 query.equalTo('objectId', 'ypk03ZHeJxjSnSM1');
                 query.limit(1);
                 return [4 /*yield*/, query.fetchAll()];
