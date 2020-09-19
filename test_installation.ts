@@ -17,3 +17,5 @@ await installation
   .set('deviceToken', 'bbbb')
   .save();
 
+
+installation.delete()

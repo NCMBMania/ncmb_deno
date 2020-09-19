@@ -64,6 +64,13 @@ var NCMBInstallation = /** @class */ (function (_super) {
     NCMBInstallation.prototype.get = function (k) {
         return _super.prototype.get.call(this, k);
     };
+    NCMBInstallation.prototype["delete"] = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, _super.prototype["delete"].call(this, NCMBInstallation.ncmb)];
+            });
+        });
+    };
     NCMBInstallation.prototype.save = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {

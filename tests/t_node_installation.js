@@ -59,6 +59,7 @@ var ncmb = new index_1.NCMB(applicationKey, clientKey);
                         .save()];
             case 2:
                 _a.sent();
+                installation["delete"]();
                 return [2 /*return*/];
         }
     });

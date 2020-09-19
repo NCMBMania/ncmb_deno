@@ -54,10 +54,42 @@ var object_ts_1 = require("./object.ts");
 var NCMBUser = /** @class */ (function (_super) {
     __extends(NCMBUser, _super);
     function NCMBUser() {
-        return _super.call(this, 'users') || this;
+        var _this = _super.call(this, 'users') || this;
+        _this._name = 'users';
+        _this._fields = {};
+        return _this;
     }
     NCMBUser.prototype.sets = function (obj) {
         return _super.prototype.sets.call(this, obj);
+    };
+    NCMBUser.prototype["delete"] = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, _super.prototype["delete"].call(this, NCMBUser.ncmb)];
+            });
+        });
+    };
+    NCMBUser.prototype.get = function (k) {
+        return _super.prototype.get.call(this, k);
+    };
+    NCMBUser.signUp = function (userName, password) {
+        return __awaiter(this, void 0, void 0, function () {
+            var json, user;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, NCMBUser.ncmb.request.exec('POST', '/users', {}, {
+                            userName: userName, password: password
+                        })];
+                    case 1:
+                        json = _a.sent();
+                        user = new NCMBUser();
+                        NCMBUser.ncmb.sessionToken = json.sessionToken;
+                        delete json.sessionToken;
+                        user.sets(json);
+                        return [2 /*return*/, user];
+                }
+            });
+        });
     };
     NCMBUser.login = function (userName, password) {
         return __awaiter(this, void 0, void 0, function () {

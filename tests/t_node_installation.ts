@@ -16,4 +16,5 @@ const ncmb = new NCMB(applicationKey, clientKey);
   await installation
     .set('deviceToken', 'dddd')
     .save();
+  installation.delete();
 })();

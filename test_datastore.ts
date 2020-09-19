@@ -29,7 +29,7 @@ await hello2
   .set('geo', geo)
   .save()
 console.log(hello.get('objectId'))
-
+await hello.delete()
 const user = await NCMBUser.login('tester', 'tester')
 
 
@@ -38,3 +38,7 @@ query.equalTo('objectId', 'DPnmQfMGTMuSS44Q')
 query.limit(1)
 const results = await query.fetchAll()
 console.log(results)
+
+const user2 = await NCMBUser.signUp('tester2', 'tester')
+console.log(user2.get('objectId'))
+await user2.delete()

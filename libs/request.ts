@@ -24,6 +24,11 @@ class NCMBRequest {
   async put(className: string, data = {}, objectId: string): Promise<{ [s: string]: any }> {
     return await this.exec('PUT', className, {}, data, objectId)
   }
+
+  async delete(className: string, objectId: string): Promise<boolean> {
+    const res = await this.exec('DELETE', className, {}, {}, objectId)
+    return Object.keys(res).length === 0
+  }
   
   data(params: { [s: string]: any } = {}) {
     const data = {...params}
@@ -42,7 +47,7 @@ class NCMBRequest {
     return JSON.stringify(data)
   }
   
-  async exec(method: string, className: string, queries: { [s: string]: any } = {}, data:{ [s: string]: any } = {}, objectId: string|null = null) {
+  async exec(method: string, className: string, queries: { [s: string]: any } = {}, data:{ [s: string]: any } = {}, objectId: string|null = null): Promise<{ [s: string]: any }> {
     const time = (new Date).toISOString()
     const sig = NCMBRequest.ncmb.signature.create(method, time, className, queries, objectId)
     const headers: { [s: string]: any } = {
@@ -52,14 +57,18 @@ class NCMBRequest {
     headers[NCMBRequest.ncmb.applicationKeyName] = NCMBRequest.ncmb.applicationKey
     headers[NCMBRequest.ncmb.timestampName] = time
     if (NCMBRequest.ncmb.sessionToken) {
-      headers[NCMBRequest.ncmb.timestampName]
+      headers[NCMBRequest.ncmb.sessionTokenHeader] = NCMBRequest.ncmb.sessionToken
     }
     const res = await NCMBRequest.ncmb.fetch(NCMBRequest.ncmb.url(className, queries, objectId), {
       method: method,
       headers: headers,
       body: ['POST', 'PUT'].indexOf(method) > -1 ? this.data(data) : null
     })
-    const json = await res.json()
+    const text = await res.text();
+    if (method === 'DELETE' && text === '') {
+      return {}
+    }
+    const json = JSON.parse(text)
     if (json.code) throw new Error(json.error)
     return json
   }  

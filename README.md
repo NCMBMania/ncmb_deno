@@ -85,23 +85,23 @@ const ncmb = new NCMB('YOUR_APPLICATION_KEY', 'YOUR_CLIENT_KEY')
 const hello = new NCMBObject('HelloDeno');
 
 (async () =>  {
-- await hello
--   .set('message', 'Hello world')
--   .set('number', 100)
--   .save()
-- console.log(hello.get('objectId'))
+  await hello
+    .set('message', 'Hello world')
+    .set('number', 100)
+    .save()
+  console.log(hello.get('objectId'))
 
-- await hello
--   .set('number', 200)
--   .save()
+  await hello
+    .set('number', 200)
+    .save()
 
-- console.log(hello.get('number'))
+  console.log(hello.get('number'))
 
-- const query = ncmb.Query('HelloDeno')
-- query.equalTo('objectId', 'ypk03ZHeJxjSnSM1')
-- query.limit(1)
-- const results = await query.fetchAll()
-- console.log(results)
+  const query = ncmb.Query('HelloDeno')
+  query.equalTo('objectId', 'ypk03ZHeJxjSnSM1')
+  query.limit(1)
+  const results = await query.fetchAll()
+  console.log(results)
 })();
 ```
 
@@ -144,12 +144,39 @@ console.log(results[0].get('objectId'))
 - withinRadians(key: string, location: NCMBGeoPoint, maxDistance: number): NCMBQuery
 - withinSquare(key: string, southWestVertex: NCMBGeoPoint, northEastVertex: NCMBGeoPoint): NCMBQuery
 
+#### 削除
+
+```js
+hello.delete()
+```
+
 ### 会員管理
+
+#### 会員登録（ID/パスワード）
+
+```js
+const user = await NCMBUser.singUp('tester', 'tester')
+```
+
 
 #### ログイン（ID/パスワード）
 
 ```js
 const user = await NCMBUser.login('tester', 'tester')
+```
+
+#### 更新
+
+```js
+await user
+  .set('displayName', 'Test user')
+  .save();
+```
+
+#### 削除
+
+```js
+await user.delete()
 ```
 
 ### デバイストークン
@@ -171,6 +198,12 @@ await installation
 await installation
 - .set('deviceToken', 'bbbb')
 - .save();
+```
+
+#### 削除
+
+```js
+await installation.delete();
 ```
 
 ### 位置情報

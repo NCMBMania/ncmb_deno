@@ -52,6 +52,10 @@ class NCMBObject {
     return this
   }
 
+  async delete(ncmb?: NCMB): Promise<boolean> {
+    return await (ncmb || NCMBObject.ncmb).request.delete(this._name, this._fields.objectId)
+  }
+
   toJSON(): { [s: string]: string } {
     console.log('toJSON', this._fields)
     if (!this.get('objectId')) {

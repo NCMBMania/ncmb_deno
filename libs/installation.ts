@@ -19,6 +19,10 @@ class NCMBInstallation extends NCMBObject {
     return super.get(k)
   }
 
+  async delete(): Promise<boolean> {
+    return super.delete(NCMBInstallation.ncmb)
+  }
+
   async save(): Promise<NCMBObject | NCMBInstallation> {
     if (['ios', 'android'].indexOf(super.get('deviceType')) === -1) {
       throw new Error(`deviceType is only ios or android`)

@@ -22,6 +22,7 @@ export class NCMB {
   signature!: NCMBSignature
   request!: NCMBRequest
   sessionToken: string | null = null
+  sessionTokenHeader: string
 
   constructor(applicationKey: string, clientKey: string) {
     this.applicationKey = applicationKey
@@ -30,6 +31,7 @@ export class NCMB {
     this.version = '2013-09-01'
     this.applicationKeyName = 'X-NCMB-Application-Key'
     this.timestampName = 'X-NCMB-Timestamp'
+    this.sessionTokenHeader = 'X-NCMB-Apps-Session-Token'
     this.signature = new NCMBSignature
     this.request = new NCMBRequest
     this.initObject()

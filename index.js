@@ -26,6 +26,7 @@ var NCMB = /** @class */ (function () {
         this.version = '2013-09-01';
         this.applicationKeyName = 'X-NCMB-Application-Key';
         this.timestampName = 'X-NCMB-Timestamp';
+        this.sessionTokenHeader = 'X-NCMB-Apps-Session-Token';
         this.signature = new signature_1["default"];
         this.request = new request_1["default"];
         this.initObject();

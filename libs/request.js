@@ -92,6 +92,19 @@ var NCMBRequest = /** @class */ (function () {
             });
         });
     };
+    NCMBRequest.prototype["delete"] = function (className, objectId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.exec('DELETE', className, {}, {}, objectId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, Object.keys(res).length === 0];
+                }
+            });
+        });
+    };
     NCMBRequest.prototype.data = function (params) {
         if (params === void 0) { params = {}; }
         var data = __assign({}, params);
@@ -114,7 +127,7 @@ var NCMBRequest = /** @class */ (function () {
         if (data === void 0) { data = {}; }
         if (objectId === void 0) { objectId = null; }
         return __awaiter(this, void 0, void 0, function () {
-            var time, sig, headers, res, json;
+            var time, sig, headers, res, text, json;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -127,7 +140,7 @@ var NCMBRequest = /** @class */ (function () {
                         headers[NCMBRequest.ncmb.applicationKeyName] = NCMBRequest.ncmb.applicationKey;
                         headers[NCMBRequest.ncmb.timestampName] = time;
                         if (NCMBRequest.ncmb.sessionToken) {
-                            headers[NCMBRequest.ncmb.timestampName];
+                            headers[NCMBRequest.ncmb.sessionTokenHeader] = NCMBRequest.ncmb.sessionToken;
                         }
                         return [4 /*yield*/, NCMBRequest.ncmb.fetch(NCMBRequest.ncmb.url(className, queries, objectId), {
                                 method: method,
@@ -136,9 +149,13 @@ var NCMBRequest = /** @class */ (function () {
                             })];
                     case 1:
                         res = _a.sent();
-                        return [4 /*yield*/, res.json()];
+                        return [4 /*yield*/, res.text()];
                     case 2:
-                        json = _a.sent();
+                        text = _a.sent();
+                        if (method === 'DELETE' && text === '') {
+                            return [2 /*return*/, {}];
+                        }
+                        json = JSON.parse(text);
                         if (json.code)
                             throw new Error(json.error);
                         return [2 /*return*/, json];

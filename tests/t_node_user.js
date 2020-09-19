@@ -42,13 +42,20 @@ var applicationKey = config.applicationKey;
 var clientKey = config.clientKey;
 var ncmb = new index_1.NCMB(applicationKey, clientKey);
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var user;
+    var user, user2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, index_1.NCMBUser.login('tester', 'tester')];
             case 1:
                 user = _a.sent();
                 console.log(user);
+                return [4 /*yield*/, index_1.NCMBUser.signUp('tester2', 'tester')];
+            case 2:
+                user2 = _a.sent();
+                console.log(user2.get('objectId'));
+                return [4 /*yield*/, user2["delete"]()];
+            case 3:
+                _a.sent();
                 return [2 /*return*/];
         }
     });

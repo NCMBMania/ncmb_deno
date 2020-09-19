@@ -86,6 +86,16 @@ var NCMBObject = /** @class */ (function () {
             });
         });
     };
+    NCMBObject.prototype["delete"] = function (ncmb) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, (ncmb || NCMBObject.ncmb).request["delete"](this._name, this._fields.objectId)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     NCMBObject.prototype.toJSON = function () {
         console.log('toJSON', this._fields);
         if (!this.get('objectId')) {

@@ -31,7 +31,7 @@ const hello = new NCMBObject('HelloDeno');
     .set('hello1', hello)
     .set('geo', geo)
     .save()
-
+  await hello.delete()
   const query = new NCMBQuery('HelloDeno')
   query.equalTo('objectId', 'ypk03ZHeJxjSnSM1')
   query.limit(1)

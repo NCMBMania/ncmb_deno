@@ -74,11 +74,14 @@ var hello = new index_1.NCMBObject('HelloDeno');
                         .save()];
             case 3:
                 _a.sent();
+                return [4 /*yield*/, hello["delete"]()];
+            case 4:
+                _a.sent();
                 query = new index_1.NCMBQuery('HelloDeno');
                 query.equalTo('objectId', 'ypk03ZHeJxjSnSM1');
                 query.limit(1);
                 return [4 /*yield*/, query.fetchAll()];
-            case 4:
+            case 5:
                 results = _a.sent();
                 console.log(results);
                 return [2 /*return*/];

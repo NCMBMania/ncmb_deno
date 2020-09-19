@@ -16,6 +16,7 @@
       "node",
       "node-fetch"
     ],
+    "moduleResolution":"Node",
     "rootDir":"./index.ts",
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": true,
