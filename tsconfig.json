@@ -16,6 +16,9 @@
       "node",
       "node-fetch"
     ],
+    "module": "es2015",
+    "moduleResolution":"Node",
+    "rootDir":"./index.ts",
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -26,7 +29,6 @@
     "noUnusedParameters": false,
     "preserveConstEnums": false,
     "removeComments": false,
-    "resolveJsonModule": true,
     "strict": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
@@ -35,5 +37,6 @@
     "suppressExcessPropertyErrors": false,
     "suppressImplicitAnyIndexErrors": false,
     "useDefineForClassFields": false
-  }
+  },
+  "exclude": ["./ncmb.ts", "./test_*.ts", "./types/*"]
 }
