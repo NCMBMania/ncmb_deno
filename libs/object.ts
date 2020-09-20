@@ -39,6 +39,10 @@ class NCMBObject {
     return this._fields[k]
   }
 
+  getJson(): {[s: string]: any} {
+    return {...this._fields, ...{sessionToken: NCMBObject.ncmb.sessionToken}}    
+  }
+
   async save(): Promise<NCMBObject | NCMBInstallation | NCMBUser> {
     for (const key of this._required) {
       const value = this.get(key);

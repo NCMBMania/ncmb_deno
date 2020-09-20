@@ -10,6 +10,7 @@ import NCMBGeoPoint from './libs/geopoint'
 import * as crypto from 'crypto';
 import fetch, { Response } from 'node-fetch'
 import { v4 as uuidv4 } from 'uuid'
+import { CLIENT_RENEG_WINDOW } from 'tls'
 
 export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint }
 
@@ -96,7 +97,9 @@ export class NCMB {
   }
   
   fetch(url: string, options: any): Promise<Response> {
+    if (typeof window !== 'undefined') {
+      return fetch.bind(window)(url, options);
+    }
     return fetch(url, options);
   }
-
 }

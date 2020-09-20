@@ -32,6 +32,14 @@ class NCMBUser extends NCMBObject {
     return super.fetch(NCMBUser.ncmb)
   }
 
+  static key(): string {
+    return `NCMB/${NCMBUser.ncmb.applicationKey}/currentUser`
+  }
+
+  getJson(): {[s: string]: any} {
+    return {...this._fields, ...{sessionToken: NCMBUser.ncmb.sessionToken}}    
+  }
+
   static async signUp(userName: string, password: string): Promise<NCMBUser> {
     return this.signUpWith({userName, password})
   }
