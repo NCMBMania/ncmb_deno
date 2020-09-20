@@ -37,4 +37,8 @@ const hello = new NCMBObject('HelloDeno');
   query.limit(1)
   const results = await query.fetchAll()
   console.log(results)
+
+  const d = new NCMBObject('HelloDeno')
+  await d.set('objectId', 'DPnmQfMGTMuSS44Q').fetch()
+  console.log(d)
 })();

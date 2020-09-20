@@ -9,6 +9,7 @@ import NCMBGeoPoint from './libs/geopoint'
 
 import * as crypto from 'crypto';
 import fetch, { Response } from 'node-fetch'
+import { v4 as uuidv4 } from 'uuid'
 
 export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint }
 
@@ -90,7 +91,10 @@ export class NCMB {
     return this.base64(hmac.update(str).digest())
   }
 
-
+  uuid(): string {
+    return uuidv4()
+  }
+  
   fetch(url: string, options: any): Promise<Response> {
     return fetch(url, options);
   }

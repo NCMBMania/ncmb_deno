@@ -1,11 +1,12 @@
 {
   "name": "ncmb_ts",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "denoやNode.jsでNCMB（ニフクラ mobile backend）を使うためのSDKです。非公式ライブラリになります。TypeScriptなので入力サジェストが利用できます。",
   "main": "index.js",
   "scripts": {
-    "clean": "rm *.js && rm libs/*.js",
+    "clean": "rm *.js && rm libs/*.js && rm tests/*.js",
     "build": "tsc",
+    "type": "tsc -d --outDir types/ index.ts && rm types/**/*.js && rm types/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,8 +22,10 @@
   "dependencies": {
     "@types/node": "^14.6.4",
     "@types/node-fetch": "^2.5.7",
+    "@types/uuid": "^8.3.0",
     "form-data": "^3.0.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "ts-node": "^9.0.0",

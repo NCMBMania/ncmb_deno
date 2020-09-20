@@ -52,12 +52,17 @@ class NCMBObject {
     return this
   }
 
+  async fetch(ncmb?: NCMB): Promise<NCMBObject | NCMBUser | NCMBInstallation> {
+    const json = await (ncmb || NCMBObject.ncmb).request.exec('GET', this._name, {}, {}, this._fields.objectId)
+    this.sets(json)
+    return this
+  }
+
   async delete(ncmb?: NCMB): Promise<boolean> {
     return await (ncmb || NCMBObject.ncmb).request.delete(this._name, this._fields.objectId)
   }
 
   toJSON(): { [s: string]: string } {
-    console.log('toJSON', this._fields)
     if (!this.get('objectId')) {
       throw new Error('Save object data before add themselve as Pointer.')
     }

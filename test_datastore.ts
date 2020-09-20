@@ -18,7 +18,7 @@ await hello
 const acl = new NCMBAcl()
 acl
   .setPublicReadAccess(true)
-  .setPublicWriteAccess(false)
+  .setPublicWriteAccess(true)
 const geo = new NCMBGeoPoint(35.0, 100.0);
 const hello2 = new NCMBObject('HelloDeno')
 await hello2
@@ -42,3 +42,7 @@ console.log(results)
 const user2 = await NCMBUser.signUp('tester2', 'tester')
 console.log(user2.get('objectId'))
 await user2.delete()
+await NCMBUser.logout()
+const d = new NCMBObject('HelloDeno')
+await d.set('objectId', 'DPnmQfMGTMuSS44Q').fetch()
+console.log(d)

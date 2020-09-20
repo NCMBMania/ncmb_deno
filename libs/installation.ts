@@ -19,6 +19,10 @@ class NCMBInstallation extends NCMBObject {
     return super.get(k)
   }
 
+  async fetch(): Promise<NCMBInstallation> {
+    return super.fetch(NCMBInstallation.ncmb)
+  }
+
   async delete(): Promise<boolean> {
     return super.delete(NCMBInstallation.ncmb)
   }

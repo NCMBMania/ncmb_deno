@@ -12,6 +12,10 @@ class NCMBUser extends NCMBObject {
     super('users')
   }
 
+  set(key: string, value: any): NCMBUser {
+    return super.set(key, value)
+  }
+
   sets(obj: { [s: string]: any }): NCMBUser {
     return super.sets(obj)
   }
@@ -24,10 +28,34 @@ class NCMBUser extends NCMBObject {
     return super.get(k)
   }
 
+  async fetch(): Promise<NCMBUser> {
+    return super.fetch(NCMBUser.ncmb)
+  }
+
   static async signUp(userName: string, password: string): Promise<NCMBUser> {
-    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, {
-      userName, password
-    })
+    return this.signUpWith({userName, password})
+  }
+
+  static async requestSignUpEmail(mailAddress: string): Promise<boolean> {
+    try {
+      const json = await NCMBUser.ncmb.request.exec('POST', '/requestMailAddressUserEntry', {}, { mailAddress })
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+
+  static async requestPasswordReset(mailAddress: string): Promise<boolean> {
+    try {
+      const json = await NCMBUser.ncmb.request.exec('POST', '/requestPasswordReset', {}, { mailAddress })
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+  
+  static async signUpWith(params: {[s: string]: any}): Promise<NCMBUser> {
+    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, params)
     const user = new NCMBUser()
     NCMBUser.ncmb.sessionToken = json.sessionToken
     delete json.sessionToken
@@ -36,14 +64,40 @@ class NCMBUser extends NCMBObject {
   }
 
   static async login(userName: string, password: string): Promise<NCMBUser> {
-    const json = await NCMBUser.ncmb.request.exec('GET', '/login', {
-      userName, password
-    })
+    return this.loginWith({userName, password})
+  }
+
+  static async loginWithEmail(mailAddress: string, password: string): Promise<NCMBUser> {
+    return this.loginWith({mailAddress, password})
+  }
+
+  static async loginWith(params: {[s: string]: any}): Promise<NCMBUser> {
+    const json = await NCMBUser.ncmb.request.exec('GET', '/login', params)
     const user = new NCMBUser()
     NCMBUser.ncmb.sessionToken = json.sessionToken
     delete json.sessionToken
     user.sets(json)
     return user
+  }
+
+  static async logout(): Promise<void> {
+    try {
+      await NCMBUser.ncmb.request.exec('GET', '/logout', {});
+    } catch (err) {
+
+    }
+    NCMBUser.ncmb.sessionToken = null
+  }
+
+  static async loginAsAnonymous(): Promise<NCMBUser> {
+    const uuid = NCMBUser.ncmb.uuid()
+    return this.signUpWith({
+      authData:{
+        anonymous:{
+          id: uuid
+        }
+      }
+    })
   }
 }
 

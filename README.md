@@ -144,6 +144,15 @@ console.log(results[0].get('objectId'))
 - withinRadians(key: string, location: NCMBGeoPoint, maxDistance: number): NCMBQuery
 - withinSquare(key: string, southWestVertex: NCMBGeoPoint, northEastVertex: NCMBGeoPoint): NCMBQuery
 
+#### objectIdを指定して取得
+
+```js
+const d = new NCMBObject('HelloDeno')
+await d
+  .set('objectId', 'DPnmQfMGTMuSS44Q')
+  .fetch()
+```
+
 #### 削除
 
 ```js
@@ -158,11 +167,30 @@ hello.delete()
 const user = await NCMBUser.singUp('tester', 'tester')
 ```
 
+#### 会員登録（メールアドレス）
+
+会員登録メール要求を呼び出します。
+
+```js
+await NCMBUser.requestSignUpEmail('tester@moongift.jp')
+```
 
 #### ログイン（ID/パスワード）
 
 ```js
 const user = await NCMBUser.login('tester', 'tester')
+```
+
+#### ログイン（メールアドレス/パスワード）
+
+```js
+const emailLogin = await NCMBUser.loginWithEmail(mailAddress, password)
+```
+
+#### 匿名認証
+
+```js
+const anony = await NCMBUser.loginAsAnonymous()
 ```
 
 #### 更新
@@ -171,6 +199,18 @@ const user = await NCMBUser.login('tester', 'tester')
 await user
   .set('displayName', 'Test user')
   .save();
+```
+
+#### ログアウト
+
+```js
+await NCMBUser.logout()
+```
+
+#### パスワードリマインダー
+
+```js
+await NCMBUser.requestPasswordReset(mailAddress)
 ```
 
 #### 削除
