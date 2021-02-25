@@ -17,19 +17,31 @@ var NCMBAcl = /** @class */ (function () {
         this._fields['*'].write = bol;
         return this;
     };
+    NCMBAcl.prototype.initWhere = function (key) {
+        if (!this._fields[key]) {
+            this._fields[key] = {
+                read: false,
+                write: false
+            };
+        }
+    };
     NCMBAcl.prototype.setUserReadAccess = function (user, bol) {
+        this.initWhere(user.get('objectId'));
         this._fields[user.get('objectId')].read = bol;
         return this;
     };
     NCMBAcl.prototype.setUserWriteAccess = function (user, bol) {
+        this.initWhere(user.get('objectId'));
         this._fields[user.get('objectId')].write = bol;
         return this;
     };
     NCMBAcl.prototype.setRoleReadAccess = function (role, bol) {
+        this.initWhere("role:" + role);
         this._fields["role:" + role].read = bol;
         return this;
     };
     NCMBAcl.prototype.setRoleWriteAccess = function (role, bol) {
+        this.initWhere("role:" + role);
         this._fields["role:" + role].write = bol;
         return this;
     };
