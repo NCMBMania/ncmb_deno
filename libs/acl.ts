@@ -21,23 +21,36 @@ class NCMBAcl {
     this._fields['*'].write = bol;
     return this;
   }
+
+  initWhere(key: string): void {
+    if (!this._fields[key]) {
+      this._fields[key] = {
+        read: false,
+        write: false
+      }
+    }
+  }
   
   setUserReadAccess(user: NCMBUser, bol: boolean): NCMBAcl {
+    this.initWhere(user.get('objectId'));
     this._fields[user.get('objectId')].read = bol;
     return this;
   }
 
   setUserWriteAccess(user: NCMBUser, bol: boolean): NCMBAcl {
+    this.initWhere(user.get('objectId'));
     this._fields[user.get('objectId')].write = bol;
     return this;
   }
 
   setRoleReadAccess(role: string, bol: boolean): NCMBAcl {
+    this.initWhere(`role:${role}`);
     this._fields[`role:${role}`].read = bol;
     return this;
   }
 
   setRoleWriteAccess(role: string, bol: boolean): NCMBAcl {
+    this.initWhere(`role:${role}`);
     this._fields[`role:${role}`].write = bol;
     return this;
   }
