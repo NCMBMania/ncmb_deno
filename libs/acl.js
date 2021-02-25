@@ -56,7 +56,7 @@ var NCMBAcl = /** @class */ (function () {
                 params[key].read = true;
             }
             if (this._fields[key].write) {
-                params[key].read = true;
+                params[key].write = true;
             }
         }
         return params;
