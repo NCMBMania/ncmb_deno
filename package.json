@@ -1,6 +1,6 @@
 {
   "name": "ncmb_ts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "denoやNode.jsでNCMB（ニフクラ mobile backend）を使うためのSDKです。非公式ライブラリになります。TypeScriptなので入力サジェストが利用できます。",
   "main": "index.js",
   "scripts": {
