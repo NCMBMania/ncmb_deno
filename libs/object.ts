@@ -56,7 +56,7 @@ class NCMBObject {
       objects = [objects];
     }
     if (this._fields['objectId']) {
-      if (this._fields[k]) {
+      if (this._fields[k] && this._fields[k].objects) {
         for (const obj of objects) {
           this._fields[k].objects.push(obj)
         }

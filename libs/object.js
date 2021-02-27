@@ -88,7 +88,7 @@ var NCMBObject = /** @class */ (function () {
             objects = [objects];
         }
         if (this._fields['objectId']) {
-            if (this._fields[k]) {
+            if (this._fields[k] && this._fields[k].objects) {
                 for (var _i = 0, objects_1 = objects; _i < objects_1.length; _i++) {
                     var obj = objects_1[_i];
                     this._fields[k].objects.push(obj);
