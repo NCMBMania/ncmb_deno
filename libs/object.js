@@ -74,6 +74,27 @@ var NCMBObject = /** @class */ (function () {
     NCMBObject.prototype.get = function (k) {
         return this._fields[k];
     };
+    NCMBObject.prototype.remove = function (k, value) {
+        if (!Array.isArray(value)) {
+            value = [value];
+        }
+        this._fields[k] = { __op: 'Remove', objects: value };
+        return this;
+    };
+    NCMBObject.prototype.add = function (k, value) {
+        if (!Array.isArray(value)) {
+            value = [value];
+        }
+        this._fields[k] = { __op: 'Add', objects: value };
+        return this;
+    };
+    NCMBObject.prototype.addUnique = function (k, value) {
+        if (!Array.isArray(value)) {
+            value = [value];
+        }
+        this._fields[k] = { __op: 'AddUnique', objects: value };
+        return this;
+    };
     NCMBObject.prototype.getJson = function () {
         return __assign(__assign({}, this._fields), { sessionToken: NCMBObject.ncmb.sessionToken });
     };

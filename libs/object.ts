@@ -39,6 +39,30 @@ class NCMBObject {
     return this._fields[k]
   }
 
+  remove(k:string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
+    if (!Array.isArray(value)) {
+      value = [value];
+    }
+    this._fields[k] = {__op: 'Remove', objects: value};
+    return this;
+  }
+
+  add(k:string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
+    if (!Array.isArray(value)) {
+      value = [value];
+    }
+    this._fields[k] = {__op: 'Add', objects: value};
+    return this;
+  }
+
+  addUnique(k:string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
+    if (!Array.isArray(value)) {
+      value = [value];
+    }
+    this._fields[k] = {__op: 'AddUnique', objects: value};
+    return this;
+  }
+
   getJson(): {[s: string]: any} {
     return {...this._fields, ...{sessionToken: NCMBObject.ncmb.sessionToken}}    
   }
