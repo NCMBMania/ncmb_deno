@@ -153,6 +153,16 @@ var NCMBQuery = /** @class */ (function () {
         this._queries.offset = number;
         return this;
     };
+    NCMBQuery.prototype.order = function (key, descending) {
+        var symbol = descending ? "- " + key : key;
+        if (!this._queries.order) {
+            this._queries.order = symbol;
+        }
+        else {
+            this._queries.order = this._queries.order + ", " + symbol;
+        }
+        return this;
+    };
     NCMBQuery.prototype.fetchAll = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {

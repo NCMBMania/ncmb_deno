@@ -144,6 +144,16 @@ class NCMBQuery {
     return this
   }
 
+  order(key: string, descending: boolean): NCMBQuery {
+    const symbol = descending ? `- ${key}` : key;
+    if (!this._queries.order) {
+      this._queries.order = symbol;
+    } else {
+      this._queries.order = `${this._queries.order}, ${symbol}`;
+    }
+    return this;
+  }
+
   async fetchAll(): Promise<NCMBObject[]> {
     return await NCMBQuery.ncmb.request.get(this._className, this._queries)
   }
