@@ -39,27 +39,33 @@ class NCMBObject {
     return this._fields[k]
   }
 
-  remove(k:string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
-    if (!Array.isArray(value)) {
-      value = [value];
-    }
-    this._fields[k] = {__op: 'Remove', objects: value};
-    return this;
-  }
-
   add(k:string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
-    if (!Array.isArray(value)) {
-      value = [value];
-    }
-    this._fields[k] = {__op: 'Add', objects: value};
-    return this;
+    return this.addOrRemote(k, value, 'Add');
   }
 
   addUnique(k:string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
-    if (!Array.isArray(value)) {
-      value = [value];
+    return this.addOrRemote(k, value, 'AddUnique');
+  }
+
+  remove(k:string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
+    return this.addOrRemote(k, value, 'Remove');
+  }
+
+  addOrRemote(k: string, objects: any, __op: string) {
+    if (!Array.isArray(objects)) {
+      objects = [objects];
     }
-    this._fields[k] = {__op: 'AddUnique', objects: value};
+    if (this._fields['objectId']) {
+      if (this._fields[k]) {
+        for (const obj of objects) {
+          this._fields[k].objects.push(obj)
+        }
+      } else {
+        this._fields[k] = {__op, objects};
+      }
+    } else {
+      this._fields[k] = objects;
+    }
     return this;
   }
 

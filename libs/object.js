@@ -74,25 +74,33 @@ var NCMBObject = /** @class */ (function () {
     NCMBObject.prototype.get = function (k) {
         return this._fields[k];
     };
-    NCMBObject.prototype.remove = function (k, value) {
-        if (!Array.isArray(value)) {
-            value = [value];
-        }
-        this._fields[k] = { __op: 'Remove', objects: value };
-        return this;
-    };
     NCMBObject.prototype.add = function (k, value) {
-        if (!Array.isArray(value)) {
-            value = [value];
-        }
-        this._fields[k] = { __op: 'Add', objects: value };
-        return this;
+        return this.addOrRemote(k, value, 'Add');
     };
     NCMBObject.prototype.addUnique = function (k, value) {
-        if (!Array.isArray(value)) {
-            value = [value];
+        return this.addOrRemote(k, value, 'AddUnique');
+    };
+    NCMBObject.prototype.remove = function (k, value) {
+        return this.addOrRemote(k, value, 'Remove');
+    };
+    NCMBObject.prototype.addOrRemote = function (k, objects, __op) {
+        if (!Array.isArray(objects)) {
+            objects = [objects];
         }
-        this._fields[k] = { __op: 'AddUnique', objects: value };
+        if (this._fields['objectId']) {
+            if (this._fields[k]) {
+                for (var _i = 0, objects_1 = objects; _i < objects_1.length; _i++) {
+                    var obj = objects_1[_i];
+                    this._fields[k].objects.push(obj);
+                }
+            }
+            else {
+                this._fields[k] = { __op: __op, objects: objects };
+            }
+        }
+        else {
+            this._fields[k] = objects;
+        }
         return this;
     };
     NCMBObject.prototype.getJson = function () {
