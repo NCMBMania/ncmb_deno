@@ -75,7 +75,7 @@ var NCMBQuery = /** @class */ (function () {
     };
     NCMBQuery.prototype.exists = function (key, exist) {
         if (exist === void 0) { exist = null; }
-        if (!exist)
+        if (!exist === null)
             exist = true;
         return this.setOperand(key, exist, '$exists');
     };

@@ -58,7 +58,7 @@ class NCMBQuery {
   }
 
   exists(key: string, exist: boolean | null = null): NCMBQuery {
-    if(!exist) exist = true
+    if(!exist === null) exist = true;
     return this.setOperand(key, exist, '$exists')
   }
 
