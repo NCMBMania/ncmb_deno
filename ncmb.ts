@@ -1,11 +1,11 @@
-import NCMBObject from './libs/object.ts'
-import NCMBSignature from './libs/signature.ts'
-import NCMBRequest from './libs/request.ts'
-import NCMBQuery from './libs/query.ts'
-import NCMBInstallation from './libs/installation.ts'
-import NCMBUser from './libs/user.ts'
-import NCMBAcl from './libs/acl.ts'
-import NCMBGeoPoint from './libs/geopoint.ts'
+import NCMBObject from './src/libs/object.ts'
+import NCMBSignature from './src/libs/signature.ts'
+import NCMBRequest from './src/libs/request.ts'
+import NCMBQuery from './src/libs/query.ts'
+import NCMBInstallation from './src/libs/installation.ts'
+import NCMBUser from './src/libs/user.ts'
+import NCMBAcl from './src/libs/acl.ts'
+import NCMBGeoPoint from './src/libs/geopoint.ts'
 
 import { HmacSha256 } from "https://deno.land/std/hash/sha256.ts"
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
@@ -13,7 +13,7 @@ import { v4 } from "https://deno.land/std/uuid/mod.ts";
 
 export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint}
 
-export class NCMB {
+export default class NCMB {
   applicationKey: string
   clientKey: string
   fqdn: string

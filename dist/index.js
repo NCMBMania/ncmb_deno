@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.NCMB = exports.NCMBGeoPoint = exports.NCMBAcl = exports.NCMBUser = exports.NCMBInstallation = exports.NCMBQuery = exports.NCMBObject = void 0;
+exports.NCMBGeoPoint = exports.NCMBAcl = exports.NCMBUser = exports.NCMBInstallation = exports.NCMBQuery = exports.NCMBObject = void 0;
 var object_1 = require("./libs/object");
 exports.NCMBObject = object_1["default"];
 var signature_1 = require("./libs/signature");
@@ -93,4 +93,4 @@ var NCMB = /** @class */ (function () {
     };
     return NCMB;
 }());
-exports.NCMB = NCMB;
+exports["default"] = NCMB;

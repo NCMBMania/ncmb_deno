@@ -12,6 +12,24 @@ class NCMBAcl {
     }
   }
 
+  sets(params: { [s: string]: {[s: string]: boolean} }): NCMBAcl {
+    for (const key in params) {
+      const value = params[key];
+      if (key === '*') {
+        if (value.read) this.setPublicReadAccess(true)
+        if (value.write) this.setPublicWriteAccess(true)
+      } else if (key.match(/^role:/)) {
+        const role = key.split(':')[1];
+        if (value.read) this.setRoleReadAccess(role, true);
+        if (value.write) this.setRoleWriteAccess(role, true);
+      } else {
+        if (value.read) this.setUserReadAccess(key, true);
+        if (value.write) this.setUserWriteAccess(key, true);
+      }
+    }
+    return this;
+  }
+
   setPublicReadAccess(bol: boolean): NCMBAcl {
     this._fields['*'].read = bol;
     return this;

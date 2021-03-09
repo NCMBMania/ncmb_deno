@@ -33,6 +33,12 @@ declare class NCMBQuery {
     setOperand(key: string, value: any, ope?: string | null): NCMBQuery;
     limit(number: number): NCMBQuery;
     offset(number: number): NCMBQuery;
+    order(key: string, descending: boolean): NCMBQuery;
+    skip(num: number): NCMBQuery;
+    fetchWithCount(): Promise<{
+        count: number;
+        results: NCMBObject[];
+    }>;
     fetchAll(): Promise<NCMBObject[]>;
     fetch(): Promise<NCMBObject | null>;
 }

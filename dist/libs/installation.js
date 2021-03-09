@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,60 +49,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var index_1 = require("../index");
-var config = require('../config.json');
-var applicationKey = config.applicationKey;
-var clientKey = config.clientKey;
-var ncmb = new index_1.NCMB(applicationKey, clientKey);
-var hello = new index_1.NCMBObject('HelloDeno');
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var acl, geo, hello2, query, results, d;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, hello
-                    .set('message', 'Hello world')
-                    .set('number', 100)
-                    .save()];
-            case 1:
-                _a.sent();
-                console.log(hello.get('objectId'));
-                return [4 /*yield*/, hello
-                        .set('number', 200)
-                        .save()];
-            case 2:
-                _a.sent();
-                console.log(hello.get('number'));
-                acl = new index_1.NCMBAcl();
-                acl
-                    .setPublicReadAccess(true)
-                    .setPublicWriteAccess(false);
-                geo = new index_1.NCMBGeoPoint(35.0, 100.0);
-                hello2 = new index_1.NCMBObject('HelloDeno');
-                return [4 /*yield*/, hello2
-                        .set('message', 'Hello world')
-                        .set('number', 100)
-                        .set('acl', acl)
-                        .set('hello1', hello)
-                        .set('geo', geo)
-                        .save()];
-            case 3:
-                _a.sent();
-                return [4 /*yield*/, hello["delete"]()];
-            case 4:
-                _a.sent();
-                query = new index_1.NCMBQuery('HelloDeno');
-                query.equalTo('objectId', 'ypk03ZHeJxjSnSM1');
-                query.limit(1);
-                return [4 /*yield*/, query.fetchAll()];
-            case 5:
-                results = _a.sent();
-                console.log(results);
-                d = new index_1.NCMBObject('HelloDeno');
-                return [4 /*yield*/, d.set('objectId', 'DPnmQfMGTMuSS44Q').fetch()];
-            case 6:
-                _a.sent();
-                console.log(d);
-                return [2 /*return*/];
-        }
-    });
-}); })();
+// @ts-ignore TS2691
+var object_ts_1 = require("./object.ts");
+var NCMBInstallation = /** @class */ (function (_super) {
+    __extends(NCMBInstallation, _super);
+    function NCMBInstallation() {
+        var _this = _super.call(this, 'installations') || this;
+        _super.prototype._required = ['deviceToken', 'deviceType'];
+        return _this;
+    }
+    NCMBInstallation.prototype.set = function (key, value) {
+        return _super.prototype.set.call(this, key, value);
+    };
+    NCMBInstallation.prototype.get = function (k) {
+        return _super.prototype.get.call(this, k);
+    };
+    NCMBInstallation.prototype.fetch = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, _super.prototype.fetch.call(this, NCMBInstallation.ncmb)];
+            });
+        });
+    };
+    NCMBInstallation.prototype["delete"] = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, _super.prototype["delete"].call(this, NCMBInstallation.ncmb)];
+            });
+        });
+    };
+    NCMBInstallation.prototype.save = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (['ios', 'android'].indexOf(_super.prototype.get.call(this, 'deviceType')) === -1) {
+                    throw new Error("deviceType is only ios or android");
+                }
+                return [2 /*return*/, _super.prototype.save.call(this)];
+            });
+        });
+    };
+    return NCMBInstallation;
+}(object_ts_1["default"]));
+exports["default"] = NCMBInstallation;

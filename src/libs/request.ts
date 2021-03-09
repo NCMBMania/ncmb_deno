@@ -16,6 +16,19 @@ class NCMBRequest {
       return obj
     })
   }
+
+  async getWithCount(className: string, queries: {[s: string]: any} = {}): Promise<{count: number, results: NCMBObject[]}> {
+    queries.count = 1;
+    const result = await this.exec('GET', className, queries)
+    return {
+      count: result.count,
+      results: result.results.map((o: { [s: string]: any }) => {
+        const obj = new NCMBObject(className)
+        obj.sets(o);
+        return obj;
+      })
+    };
+  }
   
   async post(className: string, data = {}): Promise<{ [s: string]: any }> {
     return await this.exec('POST', className, {}, data)

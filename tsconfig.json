@@ -17,7 +17,8 @@
       "node-fetch"
     ],
     "moduleResolution":"Node",
-    "rootDir":"./index.ts",
+    "rootDir":"src",
+    "outDir": "dist",
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -37,5 +38,5 @@
     "suppressImplicitAnyIndexErrors": false,
     "useDefineForClassFields": false
   },
-  "exclude": ["./ncmb.ts", "./test_*.ts", "./types/*"]
+  "exclude": ["./ncmb.ts", "src/tests", "./test_*.ts", "./types/*"]
 }

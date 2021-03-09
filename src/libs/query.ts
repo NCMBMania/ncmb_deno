@@ -134,6 +134,17 @@ class NCMBQuery {
     return this
   }
 
+  or(queries: NCMBQuery[]): NCMBQuery {
+    if (!this._queries._where) this._queries._where = {}
+    if (!Array.isArray(this._queries._where['$or'])) {
+      this._queries._where['$or'] = []
+    }
+    for (const query of queries) {
+      this._queries._where['$or'].push(query._queries._where)
+    }
+    return this
+  }
+  
   limit(number: number): NCMBQuery {
     this._queries.limit = number
     return this
@@ -147,15 +158,31 @@ class NCMBQuery {
   order(key: string, descending: boolean): NCMBQuery {
     const symbol = descending ? `- ${key}` : key;
     if (!this._queries.order) {
-      this._queries.order = symbol;
+      this._queries.order = symbol
     } else {
-      this._queries.order = `${this._queries.order}, ${symbol}`;
+      this._queries.order = `${this._queries.order}, ${symbol}`
     }
-    return this;
+    return this
+  }
+
+  skip(num: number): NCMBQuery {
+    if (num > 0) {
+      this._queries.skip = num
+    }
+    return this
+  }
+
+  include(name: string): NCMBQuery {
+    this._queries.include = name
+    return this
+  }
+
+  async fetchWithCount(): Promise<{count: number, results: NCMBObject[]}> {
+    return await NCMBQuery.ncmb.request.getWithCount(this._className, this._queries)
   }
 
   async fetchAll(): Promise<NCMBObject[]> {
-    return await NCMBQuery.ncmb.request.get(this._className, this._queries)
+    return await NCMBQuery.ncmb.request.get(this._className, this._queries);
   }
 
   async fetch(): Promise<NCMBObject|null> {

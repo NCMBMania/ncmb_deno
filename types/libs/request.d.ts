@@ -3,6 +3,12 @@ import NCMBObject from './object.ts';
 declare class NCMBRequest {
     static ncmb: NCMB;
     get(className: string, queries?: {}): Promise<NCMBObject[]>;
+    getWithCount(className: string, queries?: {
+        [s: string]: any;
+    }): Promise<{
+        count: number;
+        results: NCMBObject[];
+    }>;
     post(className: string, data?: {}): Promise<{
         [s: string]: any;
     }>;

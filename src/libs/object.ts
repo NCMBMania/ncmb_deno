@@ -1,5 +1,5 @@
 // @ts-ignore TS2691
-import NCMB from '../ncmb.ts'
+import NCMB, { NCMBAcl } from '../index.ts'
 // @ts-ignore TS2691
 import NCMBInstallation from './installation.ts'
 // @ts-ignore TS2691
@@ -19,6 +19,7 @@ class NCMBObject {
 
   sets(obj: { [s: string]: any }): NCMBObject | NCMBInstallation | NCMBUser {
     for (let key in obj) {
+      if (['className', '__type'].indexOf(key) > -1) continue;
       this.set(key, obj[key])
     }
     return this
@@ -29,6 +30,14 @@ class NCMBObject {
       this._fields[key] = new Date(value)
     } else if (value && value.__type === 'Date' && value.iso) {
       this._fields[key] = new Date(value.iso)
+    } else if (value && value.__type === 'Object') {
+      const o = new NCMBObject(value.className)
+      o.sets(value);
+      this._fields[key] = o
+    } else if (key === 'acl') {
+      const a = new NCMBAcl()
+      a.sets(value);
+      this._fields[key] = a
     } else {
       this._fields[key] = value
     }
@@ -40,18 +49,18 @@ class NCMBObject {
   }
 
   add(k:string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
-    return this.addOrRemote(k, value, 'Add');
+    return this.addOrRemove(k, value, 'Add');
   }
 
   addUnique(k:string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
-    return this.addOrRemote(k, value, 'AddUnique');
+    return this.addOrRemove(k, value, 'AddUnique');
   }
 
   remove(k:string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
-    return this.addOrRemote(k, value, 'Remove');
+    return this.addOrRemove(k, value, 'Remove');
   }
 
-  addOrRemote(k: string, objects: any, __op: string) {
+  addOrRemove(k: string, objects: any, __op: string) {
     if (!Array.isArray(objects)) {
       objects = [objects];
     }
@@ -98,7 +107,7 @@ class NCMBObject {
 
   toJSON(): { [s: string]: string } {
     if (!this.get('objectId')) {
-      throw new Error('Save object data before add themselve as Pointer.')
+      throw new Error('Save object data before add themselve as Pointer.');
     }
     return {
       __type: 'Pointer',

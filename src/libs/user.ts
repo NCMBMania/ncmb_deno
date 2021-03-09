@@ -1,7 +1,5 @@
 // @ts-ignore TS2691
-import NCMB from '../ncmb.ts'
-// @ts-ignore TS2691
-import NCMBObject from './object.ts'
+import NCMB, { NCMBObject, NCMBQuery } from '../index.ts'
 
 class NCMBUser extends NCMBObject {
   static ncmb: NCMB
@@ -10,6 +8,10 @@ class NCMBUser extends NCMBObject {
 
   constructor() {
     super('users')
+  }
+
+  static query(): NCMBQuery {
+    return new NCMBQuery('users')
   }
 
   set(key: string, value: any): NCMBUser {
@@ -41,7 +43,32 @@ class NCMBUser extends NCMBObject {
   }
 
   static async signUp(userName: string, password: string): Promise<NCMBUser> {
-    return this.signUpWith({userName, password})
+    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, {userName, password})
+    const user = new NCMBUser()
+    NCMBUser.ncmb.sessionToken = json.sessionToken
+    delete json.sessionToken
+    user.sets(json)
+    return user
+  }
+  
+  async signUpByAccount(): Promise<boolean> {
+    const json = await NCMBUser.ncmb.request.exec('GET', '/login', this._fields)
+    NCMBUser.ncmb.sessionToken = json.sessionToken
+    delete json.sessionToken
+    this.sets(json)
+    return true
+  }  
+
+  async signUpWith(provider: string, authData: authData): Promise<boolean> {
+    const expireDate = new Date(authData.expires! + (new Date()).getTime()).toJSON();
+    authData.expiration_date = {
+      __type: 'Date',
+      iso: expireDate
+    };
+    delete authData.expires;
+    this._fields = { authData: {}};
+    this._fields.authData[provider] = authData;
+    return await this.signUpByAccount();
   }
 
   static async requestSignUpEmail(mailAddress: string): Promise<boolean> {
@@ -62,15 +89,6 @@ class NCMBUser extends NCMBObject {
     }
   }
   
-  static async signUpWith(params: {[s: string]: any}): Promise<NCMBUser> {
-    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, params)
-    const user = new NCMBUser()
-    NCMBUser.ncmb.sessionToken = json.sessionToken
-    delete json.sessionToken
-    user.sets(json)
-    return user
-  }
-
   static async login(userName: string, password: string): Promise<NCMBUser> {
     return this.loginWith({userName, password})
   }
@@ -97,15 +115,14 @@ class NCMBUser extends NCMBObject {
     NCMBUser.ncmb.sessionToken = null
   }
 
-  static async loginAsAnonymous(): Promise<NCMBUser> {
+  static async loginAsAnonymous(): Promise<NCMBUser | null> {
     const uuid = NCMBUser.ncmb.uuid()
-    return this.signUpWith({
-      authData:{
-        anonymous:{
-          id: uuid
-        }
-      }
-    })
+    const user = new NCMBUser;
+    if (user.signUpWith('anonymous', { id: uuid })) {
+      return user
+    } else {
+      return null
+    }
   }
 }
 

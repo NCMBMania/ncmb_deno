@@ -61,7 +61,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 // @ts-ignore TS2691
-var object_ts_1 = require("./object.js");
+var object_ts_1 = require("./object.ts");
 var NCMBUser = /** @class */ (function (_super) {
     __extends(NCMBUser, _super);
     function NCMBUser() {

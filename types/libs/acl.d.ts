@@ -8,6 +8,7 @@ declare class NCMBAcl {
     constructor();
     setPublicReadAccess(bol: boolean): NCMBAcl;
     setPublicWriteAccess(bol: boolean): NCMBAcl;
+    initWhere(key: string): void;
     setUserReadAccess(user: NCMBUser, bol: boolean): NCMBAcl;
     setUserWriteAccess(user: NCMBUser, bol: boolean): NCMBAcl;
     setRoleReadAccess(role: string, bol: boolean): NCMBAcl;

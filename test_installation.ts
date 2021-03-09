@@ -1,10 +1,10 @@
-import { NCMB, NCMBInstallation } from './ncmb.ts'
+import NCMB, { NCMBInstallation } from './ncmb.ts'
 import { readJson } from 'https://deno.land/std/fs/read_json.ts'
 const config = await readJson('./config.json') as { [s: string]: string }
 const applicationKey = config.applicationKey
 const clientKey = config.clientKey
 
-const ncmb = new NCMB(applicationKey, clientKey)
+new NCMB(applicationKey, clientKey)
 const installation = new NCMBInstallation
 
 await installation

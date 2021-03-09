@@ -14,6 +14,13 @@ declare class NCMBObject {
     }): NCMBObject | NCMBInstallation | NCMBUser;
     set(key: string, value: any): NCMBObject | NCMBInstallation | NCMBUser;
     get(k: string): any;
+    add(k: string, value: any): NCMBObject | NCMBInstallation | NCMBUser;
+    addUnique(k: string, value: any): NCMBObject | NCMBInstallation | NCMBUser;
+    remove(k: string, value: any): NCMBObject | NCMBInstallation | NCMBUser;
+    addOrRemove(k: string, objects: any, __op: string): this;
+    getJson(): {
+        [s: string]: any;
+    };
     save(): Promise<NCMBObject | NCMBInstallation | NCMBUser>;
     fetch(ncmb?: NCMB): Promise<NCMBObject | NCMBUser | NCMBInstallation>;
     delete(ncmb?: NCMB): Promise<boolean>;

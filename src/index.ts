@@ -14,7 +14,7 @@ import { CLIENT_RENEG_WINDOW } from 'tls'
 
 export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint }
 
-export class NCMB {
+export default class NCMB {
   applicationKey: string
   clientKey: string
   fqdn: string

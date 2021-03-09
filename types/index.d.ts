@@ -8,7 +8,7 @@ import NCMBAcl from './libs/acl';
 import NCMBGeoPoint from './libs/geopoint';
 import { Response } from 'node-fetch';
 export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint };
-export declare class NCMB {
+export default class NCMB {
     applicationKey: string;
     clientKey: string;
     fqdn: string;

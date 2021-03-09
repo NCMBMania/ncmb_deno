@@ -14,6 +14,10 @@ declare class NCMBUser extends NCMBObject {
     delete(): Promise<boolean>;
     get(k: string): any;
     fetch(): Promise<NCMBUser>;
+    static key(): string;
+    getJson(): {
+        [s: string]: any;
+    };
     static signUp(userName: string, password: string): Promise<NCMBUser>;
     static requestSignUpEmail(mailAddress: string): Promise<boolean>;
     static requestPasswordReset(mailAddress: string): Promise<boolean>;
