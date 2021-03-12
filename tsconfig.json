@@ -39,5 +39,5 @@
     "suppressImplicitAnyIndexErrors": false,
     "useDefineForClassFields": false
   },
-  "exclude": ["./test_*.ts", "./src/@types/*", "deno", "./src/tests/", "./deno.ts", "deno_test"]
+  "exclude": ["./test_*.ts", "./src/@types/*", "deno", "./src/tests/", "./deno.ts", "deno_test", "cov_profile"]
 }

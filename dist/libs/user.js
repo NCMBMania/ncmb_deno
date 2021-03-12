@@ -111,22 +111,31 @@ var NCMBUser = /** @class */ (function (_super) {
             });
         });
     };
-    NCMBUser.prototype.signUpWith = function (provider, auth) {
+    NCMBUser.signUpWith = function (provider, auth) {
         return __awaiter(this, void 0, void 0, function () {
-            var expireDate;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var expireDate, fields, json, user;
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        expireDate = new Date(auth.expires + (new Date()).getTime()).toJSON();
-                        auth.expiration_date = {
-                            __type: 'Date',
-                            iso: expireDate
-                        };
-                        delete auth.expires;
-                        this._fields = { authData: {} };
-                        this._fields.authData[provider] = auth;
-                        return [4 /*yield*/, this.signUpByAccount()];
-                    case 1: return [2 /*return*/, _a.sent()];
+                        if (auth.expires) {
+                            expireDate = new Date(auth.expires + (new Date()).getTime()).toJSON();
+                            auth.expiration_date = {
+                                __type: 'Date',
+                                iso: expireDate
+                            };
+                            delete auth.expires;
+                        }
+                        fields = { authData: (_a = {}, _a[s] = string, _a.authData = authData, _a) };
+                        fields.authData[provider] = auth;
+                        return [4 /*yield*/, NCMBUser.ncmb.request.exec('POST', '/users', {}, fields)];
+                    case 1:
+                        json = _b.sent();
+                        user = new NCMBUser();
+                        NCMBUser.ncmb.sessionToken = json.sessionToken;
+                        delete json.sessionToken;
+                        user.sets(json);
+                        return [2 /*return*/, user];
                 }
             });
         });
@@ -201,25 +210,13 @@ var NCMBUser = /** @class */ (function (_super) {
         });
     };
     NCMBUser.logout = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var err_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, NCMBUser.ncmb.request.exec('GET', '/logout', {})];
-                    case 1:
-                        _a.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        err_3 = _a.sent();
-                        return [3 /*break*/, 3];
-                    case 3:
-                        NCMBUser.ncmb.sessionToken = null;
-                        return [2 /*return*/];
-                }
-            });
-        });
+        /*
+        try {
+          await NCMBUser.ncmb.request.exec('GET', '/logout', {});
+        } catch (err) {
+        }
+        */
+        NCMBUser.ncmb.sessionToken = null;
     };
     NCMBUser.loginAsAnonymous = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -227,7 +224,7 @@ var NCMBUser = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 uuid = NCMBUser.ncmb.uuid();
                 user = new NCMBUser;
-                if (user.signUpWith('anonymous', { id: uuid })) {
+                if (NCMBUser.signUpWith('anonymous', { id: uuid })) {
                     return [2 /*return*/, user];
                 }
                 else {

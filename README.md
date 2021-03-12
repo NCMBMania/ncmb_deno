@@ -15,7 +15,10 @@ denoをインストールします。
 オブジェクトを保存するコードです。 `test.ts` として保存してください。
 
 ```js
-import NCMB, { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser } from 'https://raw.githubusercontent.com/goofmint/ncmb_deno/master/deno/ncmb.ts'
+// 最新版
+import NCMB, { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser } from 'https://raw.githubusercontent.com/NCMBMania/ncmb_deno/master/deno/ncmb.ts'
+// バージョン指定
+import NCMB, { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser } from 'https://raw.githubusercontent.com/NCMBMania/ncmb_deno/0.1.8/deno/ncmb.ts'
 
 // 初期化
 new NCMB('YOUR_APPLICATION_KEY', 'YOUR_CLIENT_KEY')

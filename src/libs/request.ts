@@ -85,6 +85,7 @@ class NCMBRequest {
     if (json.code) {
       console.log(NCMBRequest.ncmb.url(className, queries, objectId))
       console.log(headers)
+      console.log(json)
       throw new Error(json.error)
     }
     return json

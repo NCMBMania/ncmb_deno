@@ -19,7 +19,6 @@ describe('Push API', () => {
     assert.isTrue(!!push.get('objectId'));
   });
 
-  /*
   it('Save and fetch', async () => {
     const push = new NCMBPush;
     await push
@@ -51,24 +50,27 @@ describe('Push API', () => {
     query
       .equalTo('objectId', 'aaa');
     const push = new NCMBPush;
-    await push
-      .set('immediateDeliveryFlag', true)
-      .set('message', 'Hello')
-      .set('searchCondition', query)
-      .set('target', ['ios'])
-      .save();
-    assert.isTrue(!!push.get('objectId'));
+    try {
+      await push
+        .set('immediateDeliveryFlag', true)
+        .set('message', 'Hello')
+        .set('searchCondition', query)
+        .set('target', ['ios'])
+        .save();
+      assert.isTrue(!!push.get('objectId'));
+    } catch (e) {
+      console.log(e);
+    }
     await push.fetch();
   });
 
   it('Query and delete all', async () => {
     const query = NCMBPush.query();
     const ary = await query.limit(1000).fetchAll();
-    const p = [];
+    const p:Promise<boolean>[] = [];
     ary.forEach(a => {
       p.push(a.delete());
     })
     await Promise.all(p);
   });
-  */
 });

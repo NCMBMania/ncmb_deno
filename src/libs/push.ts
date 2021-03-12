@@ -17,10 +17,10 @@ class NCMBPush extends NCMBObject {
   set(name :string, value :allowType): NCMBPush {
     if (name === 'searchCondition' && value) {
       if (value instanceof NCMBQuery) {
-        return this.set(name, value._queries.where)
+        return super.set(name, value._queries.where)
       }
       if (typeof value === 'object') {
-        return this.set(name, value)
+        return super.set(name, value)
       }
       throw new Error('Search condition has to be NCMBQuery or object')
     }

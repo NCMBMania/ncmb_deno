@@ -39,16 +39,23 @@ class NCMBUser extends NCMBObject {
     return true
   }  
 
-  async signUpWith(provider: string, auth: authData): Promise<boolean> {
-    const expireDate = new Date(auth.expires! + (new Date()).getTime()).toJSON();
-    auth.expiration_date = {
-      __type: 'Date',
-      iso: expireDate
-    };
-    delete auth.expires;
-    this._fields = { authData: {}};
-    this._fields.authData[provider] = auth;
-    return await this.signUpByAccount();
+  static async signUpWith(provider: string, auth: authData): Promise<NCMBUser> {
+    if (auth.expires) {
+      const expireDate = new Date(auth.expires + (new Date()).getTime()).toJSON();
+      auth.expiration_date = {
+        __type: 'Date',
+        iso: expireDate
+      };
+      delete auth.expires;
+    }
+    const fields = { authData: {[s: string]: authData}};
+    fields.authData[provider] = auth;
+    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, fields)
+    const user = new NCMBUser()
+    NCMBUser.ncmb.sessionToken = json.sessionToken
+    delete json.sessionToken
+    user.sets(json)
+    return user
   }
 
   static async requestSignUpEmail(mailAddress: string): Promise<boolean> {
@@ -86,18 +93,20 @@ class NCMBUser extends NCMBObject {
     return user
   }
 
-  static async logout(): Promise<void> {
+  static logout(): void {
+    /*
     try {
       await NCMBUser.ncmb.request.exec('GET', '/logout', {});
     } catch (err) {
     }
+    */
     NCMBUser.ncmb.sessionToken = null
   }
 
   static async loginAsAnonymous(): Promise<NCMBUser | null> {
     const uuid = NCMBUser.ncmb.uuid()
     const user = new NCMBUser;
-    if (user.signUpWith('anonymous', { id: uuid })) {
+    if (NCMBUser.signUpWith('anonymous', { id: uuid })) {
       return user
     } else {
       return null

@@ -3,16 +3,12 @@ import NCMB from '../index.ts'
 
 class NCMBSignature {
   static ncmb: NCMB
-  _signatureMethodName: string
-  _signatureMethodValue: string
-  _signatureVersionName: string
-  _signatureVersionValue: string
+  _signatureMethodName = 'SignatureMethod'
+  _signatureMethodValue = 'HmacSHA256'
+  _signatureVersionName = 'SignatureVersion'
+  _signatureVersionValue = '2'
 
   constructor() {
-    this._signatureMethodName = 'SignatureMethod'
-    this._signatureMethodValue = 'HmacSHA256'
-    this._signatureVersionName = 'SignatureVersion'
-    this._signatureVersionValue = '2'
   }
 
   create(method: string, time: string, className: string, q:{ [s: string]: any } = {}, objectId: string|null = null): string {

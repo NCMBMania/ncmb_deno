@@ -63,10 +63,10 @@ var NCMBPush = /** @class */ (function (_super) {
     NCMBPush.prototype.set = function (name, value) {
         if (name === 'searchCondition' && value) {
             if (value instanceof index_1.NCMBQuery) {
-                return this.set(name, value._queries.where);
+                return _super.prototype.set.call(this, name, value._queries.where);
             }
             if (typeof value === 'object') {
-                return this.set(name, value);
+                return _super.prototype.set.call(this, name, value);
             }
             throw new Error('Search condition has to be NCMBQuery or object');
         }

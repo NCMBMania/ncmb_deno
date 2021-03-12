@@ -8,7 +8,7 @@
     "build": "tsc && deno-module-extension-resolver src deno && ts-node deno.ts",
     "type": "tsc -d --outDir types/ src/index.ts && rm types/**/*.js && rm types/*.js",
     "test:ts": "nyc ts-mocha src/tests/*.spec.ts",
-    "test:deno": "deno test --allow-read --allow-net deno_test/",
+    "test:deno": "deno test --allow-read --allow-net --coverage=cov_profile --unstable deno_test/",
     "open": "open coverage/index.html"
   },
   "repository": {
