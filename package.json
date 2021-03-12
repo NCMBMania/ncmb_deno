@@ -1,13 +1,15 @@
 {
   "name": "ncmb_ts",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "denoやNode.jsでNCMB（ニフクラ mobile backend）を使うためのSDKです。非公式ライブラリになります。TypeScriptなので入力サジェストが利用できます。",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rm dist/*.js && rm tests/*.js",
-    "build": "tsc",
+    "build": "tsc && deno-module-extension-resolver src deno && ts-node deno.ts",
     "type": "tsc -d --outDir types/ src/index.ts && rm types/**/*.js && rm types/*.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:ts": "nyc ts-mocha src/tests/*.spec.ts",
+    "test:deno": "deno test --allow-read --allow-net deno_test/",
+    "open": "open coverage/index.html"
   },
   "repository": {
     "type": "git",
@@ -20,20 +22,40 @@
   },
   "homepage": "https://github.com/NCMBMania/ncmb_deno#readme",
   "dependencies": {
-    "@types/chai": "^4.2.15",
-    "@types/mocha": "^8.2.1",
     "@types/node": "^14.6.4",
     "@types/node-fetch": "^2.5.7",
     "@types/uuid": "^8.3.0",
-    "chai": "^4.3.3",
     "form-data": "^3.0.0",
     "mocha": "^8.3.0",
     "node-fetch": "^2.6.1",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.15",
+    "@types/expect": "^24.3.0",
+    "@types/mocha": "^8.2.1",
+    "chai": "^4.3.3",
+    "deno-module-extension-resolver": "^0.3.0",
+    "nyc": "^15.1.0",
+    "opn-cli": "^5.0.0",
+    "ts-mocha": "^8.0.0",
     "ts-node": "^9.0.0",
     "tslint": "^6.1.3",
     "typescript": "^4.0.2"
+  },
+  "nyc": {
+    "include": [
+      "src/libs/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "sourceMap": true
   }
 }

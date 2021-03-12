@@ -1,5 +1,5 @@
-import NCMB, { NCMBObject, NCMBAcl, NCMBQuery, NCMBUser, NCMBGeoPoint } from './ncmb.ts'
-import { readJson } from 'https://deno.land/std/fs/read_json.ts'
+import NCMB, { NCMBObject, NCMBAcl, NCMBQuery, NCMBUser, NCMBGeoPoint } from './deno/ncmb.ts'
+import { readJson } from 'https://deno.land/std@0.66.0/fs/read_json.ts'
 const config = await readJson('./config.json') as { [s: string]: string }
 const applicationKey = config.applicationKey
 const clientKey = config.clientKey

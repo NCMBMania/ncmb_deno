@@ -1,5 +1,4 @@
-// @ts-ignore TS2691
-import NCMBUser from './user.ts'
+import NCMB, { NCMBUser } from '../index';
 
 class NCMBAcl {
   _fields: { [s: string]: {[s: string]: boolean} }
@@ -20,11 +19,13 @@ class NCMBAcl {
         if (value.write) this.setPublicWriteAccess(true)
       } else if (key.match(/^role:/)) {
         const role = key.split(':')[1];
-        if (value.read) this.setRoleReadAccess(role, true);
-        if (value.write) this.setRoleWriteAccess(role, true);
+        if (value.read) this.setRoleReadAccess(role, true)
+        if (value.write) this.setRoleWriteAccess(role, true)
       } else {
-        if (value.read) this.setUserReadAccess(key, true);
-        if (value.write) this.setUserWriteAccess(key, true);
+        const user = new NCMBUser()
+        user.set('objectId', key)
+        if (value.read) this.setUserReadAccess(user, true)
+        if (value.write) this.setUserWriteAccess(user, true)
       }
     }
     return this;

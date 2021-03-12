@@ -1,5 +1,5 @@
 // @ts-ignore TS2691
-import NCMB from '../ncmb.ts'
+import NCMB from '../index.ts'
 // @ts-ignore TS2691
 import NCMBObject from './object.ts'
 // @ts-ignore TS2691
@@ -82,7 +82,11 @@ class NCMBRequest {
       return {}
     }
     const json = JSON.parse(text)
-    if (json.code) throw new Error(json.error)
+    if (json.code) {
+      console.log(NCMBRequest.ncmb.url(className, queries, objectId))
+      console.log(headers)
+      throw new Error(json.error)
+    }
     return json
   }  
 }

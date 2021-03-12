@@ -11,7 +11,6 @@ const hello = new NCMBObject('HelloDeno');
     .set('message', 'Hello world')
     .set('number', 100)
     .save()
-  console.log(hello.get('objectId'))
   
   await hello
     .set('number', 200)

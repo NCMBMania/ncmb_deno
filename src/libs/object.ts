@@ -1,15 +1,10 @@
-// @ts-ignore TS2691
-import NCMB, { NCMBAcl } from '../index.ts'
-// @ts-ignore TS2691
-import NCMBInstallation from './installation.ts'
-// @ts-ignore TS2691
-import NCMBUser from './user.ts'
+import NCMB, { NCMBAcl, NCMBInstallation, NCMBUser, NCMBQuery, NCMBPush } from '../index'
 
 class NCMBObject {
   static ncmb: NCMB
-  _name: string
-  _fields: { [s: string]: any }
-  _required: string[]
+  public _name: string
+  public _fields: { [s: string]: any }
+  public _required: string[]
   
   constructor(name: string) {
     this._name = name
@@ -25,7 +20,7 @@ class NCMBObject {
     return this
   }
 
-  set(key: string, value: any): NCMBObject | NCMBInstallation | NCMBUser {
+  set(key: string, value: any): NCMBObject | NCMBInstallation | NCMBUser | NCMBPush {
     if (['createDate', 'updateDate'].indexOf(key) > -1) {
       this._fields[key] = new Date(value)
     } else if (value && value.__type === 'Date' && value.iso) {
@@ -78,11 +73,21 @@ class NCMBObject {
     return this;
   }
 
+  setIncrement(name: string, value: number): NCMBObject | NCMBUser | NCMBInstallation {
+    if (!this.get('objectId')) {
+      return this.set(name, value);
+    }
+    return this.set(name, {
+      __op: 'Increment',
+      amount: value
+    });
+  }
+
   getJson(): {[s: string]: any} {
     return {...this._fields, ...{sessionToken: NCMBObject.ncmb.sessionToken}}    
   }
 
-  async save(): Promise<NCMBObject | NCMBInstallation | NCMBUser> {
+  async save(): Promise<NCMBObject | NCMBInstallation | NCMBUser | NCMBPush> {
     for (const key of this._required) {
       const value = this.get(key);
       if (!value || value === '') {

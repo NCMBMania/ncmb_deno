@@ -1,5 +1,5 @@
-// @ts-ignore TS2691
-import NCMB, { NCMBObject, NCMBQuery } from '../index.ts'
+import NCMB, { NCMBObject, NCMBQuery } from '../index'
+import { authData } from '../@types/misc.d';
 
 class NCMBUser extends NCMBObject {
   static ncmb: NCMB
@@ -12,26 +12,6 @@ class NCMBUser extends NCMBObject {
 
   static query(): NCMBQuery {
     return new NCMBQuery('users')
-  }
-
-  set(key: string, value: any): NCMBUser {
-    return super.set(key, value)
-  }
-
-  sets(obj: { [s: string]: any }): NCMBUser {
-    return super.sets(obj)
-  }
-
-  async delete(): Promise<boolean> {
-    return super.delete(NCMBUser.ncmb)
-  }
-
-  get(k: string): any {
-    return super.get(k)
-  }
-
-  async fetch(): Promise<NCMBUser> {
-    return super.fetch(NCMBUser.ncmb)
   }
 
   static key(): string {
@@ -59,15 +39,15 @@ class NCMBUser extends NCMBObject {
     return true
   }  
 
-  async signUpWith(provider: string, authData: authData): Promise<boolean> {
-    const expireDate = new Date(authData.expires! + (new Date()).getTime()).toJSON();
-    authData.expiration_date = {
+  async signUpWith(provider: string, auth: authData): Promise<boolean> {
+    const expireDate = new Date(auth.expires! + (new Date()).getTime()).toJSON();
+    auth.expiration_date = {
       __type: 'Date',
       iso: expireDate
     };
-    delete authData.expires;
+    delete auth.expires;
     this._fields = { authData: {}};
-    this._fields.authData[provider] = authData;
+    this._fields.authData[provider] = auth;
     return await this.signUpByAccount();
   }
 
@@ -110,7 +90,6 @@ class NCMBUser extends NCMBObject {
     try {
       await NCMBUser.ncmb.request.exec('GET', '/logout', {});
     } catch (err) {
-
     }
     NCMBUser.ncmb.sessionToken = null
   }

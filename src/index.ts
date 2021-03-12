@@ -6,13 +6,14 @@ import NCMBInstallation from './libs/installation'
 import NCMBUser from './libs/user'
 import NCMBAcl from './libs/acl'
 import NCMBGeoPoint from './libs/geopoint'
+import NCMBPush from './libs/push';
 
 import * as crypto from 'crypto';
 import fetch, { Response } from 'node-fetch'
 import { v4 as uuidv4 } from 'uuid'
 import { CLIENT_RENEG_WINDOW } from 'tls'
 
-export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint }
+export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint, NCMBPush, NCMBRequest }
 
 export default class NCMB {
   applicationKey: string
@@ -46,6 +47,7 @@ export default class NCMB {
     NCMBObject.ncmb = this
     NCMBInstallation.ncmb = this
     NCMBUser.ncmb = this
+    NCMBPush.ncmb = this
   }
 
   path(className: string, objectId: string|null): string {

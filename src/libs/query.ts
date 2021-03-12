@@ -1,9 +1,4 @@
-// @ts-ignore TS2691
-import NCMB from '../ncmb.ts'
-// @ts-ignore TS2691
-import NCMBGeoPoint from './geopoint.ts'
-// @ts-ignore TS2691
-import NCMBObject from './object.ts'
+import NCMB, { NCMBGeoPoint, NCMBObject } from '../index';
 
 class NCMBQuery {
   static ncmb: NCMB
@@ -135,23 +130,62 @@ class NCMBQuery {
   }
 
   or(queries: NCMBQuery[]): NCMBQuery {
-    if (!this._queries._where) this._queries._where = {}
-    if (!Array.isArray(this._queries._where['$or'])) {
-      this._queries._where['$or'] = []
+    if (!this._queries.where) this._queries.where = {}
+    if (!Array.isArray(this._queries.where['$or'])) {
+      this._queries.where['$or'] = []
     }
     for (const query of queries) {
-      this._queries._where['$or'].push(query._queries._where)
+      this._queries.where['$or'].push(query._queries._where)
     }
-    return this
-  }
-  
-  limit(number: number): NCMBQuery {
-    this._queries.limit = number
     return this
   }
 
-  offset(number: number): NCMBQuery {
-    this._queries.offset = number
+  select(name: string, subKey: string, query: NCMBQuery): NCMBQuery {
+    const className = query.getClassName();
+    if (!this._queries.where) this._queries.where = {}
+    if (!this._queries.where[name]) this._queries.where[name] = {};
+    this._queries.where[name]['$select'] = {
+      query: query.getSelectParams(),
+      key: subKey
+    };
+    return this;
+  }
+
+  inQuery(name: string, query: NCMBQuery): NCMBQuery {
+    const className = query.getClassName();
+    if (!this._queries.where) this._queries.where = {}
+    if (!this._queries.where[name]) this._queries.where[name] = {};
+    this._queries.where[name]['$inQuery'] = query.getSelectParams()
+    return this;
+  }
+  
+  getClassName(): string {
+    switch (this._className) {
+      case 'users':
+        return 'user';
+      case 'roles':
+        return 'role';
+      case 'installations':
+        return 'installation';
+      case 'files':
+        return 'file';
+      default:
+        return this._className;
+    }
+  }
+
+  getSelectParams(): {[s: string]: any} {
+    const params: {[s: string]: any} = {
+      className: this._className,
+      where: this._queries.where
+    };
+    if (this._queries._skip && this._queries._skip > 0) params.skip = this._queries._skip;
+    if (this._queries._limit && this._queries._limit > 0) params.limit = this._queries._limit;
+    return params;
+  }
+
+  limit(number: number): NCMBQuery {
+    this._queries.limit = number
     return this
   }
 

@@ -14,7 +14,8 @@
     "lib": ["ES2020", "es5", "es6", "dom"],
     "types": [
       "node",
-      "node-fetch"
+      "node-fetch",
+      "mocha"
     ],
     "moduleResolution":"Node",
     "rootDir":"src",
@@ -38,5 +39,5 @@
     "suppressImplicitAnyIndexErrors": false,
     "useDefineForClassFields": false
   },
-  "exclude": ["./ncmb.ts", "src/tests", "./test_*.ts", "./types/*"]
+  "exclude": ["./test_*.ts", "./src/@types/*", "deno", "./src/tests/", "./deno.ts", "deno_test"]
 }

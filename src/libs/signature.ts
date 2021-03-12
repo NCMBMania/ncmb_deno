@@ -1,5 +1,5 @@
 // @ts-ignore TS2691
-import NCMB from '../ncmb.ts'
+import NCMB from '../index.ts'
 
 class NCMBSignature {
   static ncmb: NCMB
