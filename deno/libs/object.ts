@@ -1,4 +1,5 @@
-import NCMB, { NCMBAcl, NCMBInstallation, NCMBUser, NCMBQuery, NCMBPush } from '../ncmb.ts';
+import NCMB, { NCMBAcl, NCMBInstallation, NCMBUser, NCMBQuery, NCMBPush, NCMBRole, NCMBFile } from '../ncmb.ts';
+import { NCMBPointer } from "../@types/misc";
 class NCMBObject {
     static ncmb: NCMB;
     public _name: string;
@@ -88,7 +89,7 @@ class NCMBObject {
     } {
         return { ...this._fields, ...{ sessionToken: NCMBObject.ncmb.sessionToken } };
     }
-    async save(): Promise<NCMBObject | NCMBInstallation | NCMBUser | NCMBPush> {
+    async save(): Promise<NCMBObject | NCMBInstallation | NCMBUser | NCMBPush | NCMBRole> {
         for (const key of this._required) {
             const value = this.get(key);
             if (!value || value === "") {
@@ -106,11 +107,17 @@ class NCMBObject {
         return this;
     }
     async delete(ncmb?: NCMB): Promise<boolean> {
-        return await (ncmb || NCMBObject.ncmb).request.delete(this._name, this._fields.objectId);
+        const key = (this instanceof NCMBFile) ? this._fields.fileName : this._fields.objectId;
+        return await (ncmb || NCMBObject.ncmb).request.delete(this._name, key);
     }
-    toJSON(): {
-        [s: string]: string;
-    } {
+    toPointer(): NCMBPointer {
+        return {
+            "__type": "Pointer",
+            "className": this._name,
+            "objectId": this.get("objectId")
+        };
+    }
+    toJSON(): object {
         if (!this.get("objectId")) {
             throw new Error("Save object data before add themselve as Pointer.");
         }

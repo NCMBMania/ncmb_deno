@@ -23,7 +23,7 @@ class NCMBUser extends NCMBObject {
   }
 
   static async signUp(userName: string, password: string): Promise<NCMBUser> {
-    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, {userName, password})
+    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, {userName, password}) as {[s: string]: any}
     const user = new NCMBUser()
     NCMBUser.ncmb.sessionToken = json.sessionToken
     delete json.sessionToken
@@ -32,7 +32,7 @@ class NCMBUser extends NCMBObject {
   }
   
   async signUpByAccount(): Promise<boolean> {
-    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, this._fields)
+    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, this._fields) as {[s: string]: any}
     NCMBUser.ncmb.sessionToken = json.sessionToken
     delete json.sessionToken
     this.sets(json)
@@ -50,7 +50,7 @@ class NCMBUser extends NCMBObject {
     }
     const fields: { authData: {[s: string]: authData}} = {authData: {}};
     fields.authData[provider] = auth;
-    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, fields)
+    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, fields) as {[s: string]: any}
     const user = new NCMBUser()
     NCMBUser.ncmb.sessionToken = json.sessionToken
     delete json.sessionToken
@@ -85,7 +85,7 @@ class NCMBUser extends NCMBObject {
   }
 
   static async loginWith(params: {[s: string]: any}): Promise<NCMBUser> {
-    const json = await NCMBUser.ncmb.request.exec('GET', '/login', params)
+    const json = await NCMBUser.ncmb.request.exec('GET', '/login', params) as {[s: string]: any}
     const user = new NCMBUser()
     NCMBUser.ncmb.sessionToken = json.sessionToken
     delete json.sessionToken

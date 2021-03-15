@@ -1,4 +1,4 @@
-import NCMB, { NCMBGeoPoint, NCMBObject } from '../ncmb.ts';
+import NCMB, { NCMBGeoPoint, NCMBObject, NCMBUser, NCMBRole } from '../ncmb.ts';
 class NCMBQuery {
     static ncmb: NCMB;
     _className: string;
@@ -48,8 +48,8 @@ class NCMBQuery {
             exist = true;
         return this.setOperand(key, exist, "$exists");
     }
-    regularExpressionTo(key: string, regex: string): NCMBQuery {
-        return this.setOperand(key, regex, "$regex");
+    regularExpressionTo(key: string, regex: RegExp): NCMBQuery {
+        return this.setOperand(key, regex.toString().slice(1, -1), "$regex");
     }
     inArray(key: string, values: any): NCMBQuery {
         if (!Array.isArray(values))
@@ -143,6 +143,29 @@ class NCMBQuery {
         if (!this._queries.where[name])
             this._queries.where[name] = {};
         this._queries.where[name]["$inQuery"] = query.getSelectParams();
+        return this;
+    }
+    relatedTo(obj: NCMBObject | NCMBUser | NCMBRole, key: string): NCMBQuery {
+        if (!this._queries.where)
+            this._queries.where = {};
+        let className: string;
+        if (obj instanceof NCMBUser) {
+            className = "user";
+        }
+        else if (obj instanceof NCMBRole) {
+            className = "role";
+        }
+        else {
+            className = obj._name;
+        }
+        this._queries.where["$relatedTo"] = {
+            object: {
+                __type: "Pointer",
+                className,
+                objectId: obj.get("objectId")
+            },
+            key
+        };
         return this;
     }
     getClassName(): string {

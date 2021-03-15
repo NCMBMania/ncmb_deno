@@ -100,7 +100,7 @@ var NCMBUser = /** @class */ (function (_super) {
             var json;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, NCMBUser.ncmb.request.exec('GET', '/login', this._fields)];
+                    case 0: return [4 /*yield*/, NCMBUser.ncmb.request.exec('POST', '/users', {}, this._fields)];
                     case 1:
                         json = _a.sent();
                         NCMBUser.ncmb.sessionToken = json.sessionToken;
@@ -114,9 +114,8 @@ var NCMBUser = /** @class */ (function (_super) {
     NCMBUser.signUpWith = function (provider, auth) {
         return __awaiter(this, void 0, void 0, function () {
             var expireDate, fields, json, user;
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         if (auth.expires) {
                             expireDate = new Date(auth.expires + (new Date()).getTime()).toJSON();
@@ -126,11 +125,11 @@ var NCMBUser = /** @class */ (function (_super) {
                             };
                             delete auth.expires;
                         }
-                        fields = { authData: (_a = {}, _a[s] = string, _a.authData = authData, _a) };
+                        fields = { authData: {} };
                         fields.authData[provider] = auth;
                         return [4 /*yield*/, NCMBUser.ncmb.request.exec('POST', '/users', {}, fields)];
                     case 1:
-                        json = _b.sent();
+                        json = _a.sent();
                         user = new NCMBUser();
                         NCMBUser.ncmb.sessionToken = json.sessionToken;
                         delete json.sessionToken;
@@ -223,14 +222,8 @@ var NCMBUser = /** @class */ (function (_super) {
             var uuid, user;
             return __generator(this, function (_a) {
                 uuid = NCMBUser.ncmb.uuid();
-                user = new NCMBUser;
-                if (NCMBUser.signUpWith('anonymous', { id: uuid })) {
-                    return [2 /*return*/, user];
-                }
-                else {
-                    return [2 /*return*/, null];
-                }
-                return [2 /*return*/];
+                user = NCMBUser.signUpWith('anonymous', { id: uuid });
+                return [2 /*return*/, user];
             });
         });
     };

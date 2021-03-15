@@ -47,8 +47,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-// @ts-ignore TS2691
-var object_ts_1 = require("./object.ts");
+var index_1 = require("../index");
+var FormData = require("form-data");
 var NCMBRequest = /** @class */ (function () {
     function NCMBRequest() {
     }
@@ -56,19 +56,34 @@ var NCMBRequest = /** @class */ (function () {
         if (queries === void 0) { queries = {}; }
         return __awaiter(this, void 0, void 0, function () {
             var result;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.exec('GET', className, queries)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.results.map(function (o) {
-                                var obj = new object_ts_1["default"](className);
+                                var obj = _this.getObject(className);
                                 obj.sets(o);
                                 return obj;
                             })];
                 }
             });
         });
+    };
+    NCMBRequest.prototype.getObject = function (className) {
+        if (className === 'roles')
+            return new index_1.NCMBRole();
+        if (className === 'users')
+            return new index_1.NCMBUser();
+        if (className === 'installations')
+            return new index_1.NCMBInstallation();
+        if (className === 'files')
+            return new index_1.NCMBFile();
+        // if (className === 'files')
+        if (className === 'push')
+            return new index_1.NCMBPush();
+        return new index_1.NCMBObject(className);
     };
     NCMBRequest.prototype.getWithCount = function (className, queries) {
         if (queries === void 0) { queries = {}; }
@@ -84,7 +99,7 @@ var NCMBRequest = /** @class */ (function () {
                         return [2 /*return*/, {
                                 count: result.count,
                                 results: result.results.map(function (o) {
-                                    var obj = new object_ts_1["default"](className);
+                                    var obj = new index_1.NCMBObject(className);
                                     obj.sets(o);
                                     return obj;
                                 })
@@ -129,7 +144,8 @@ var NCMBRequest = /** @class */ (function () {
         });
     };
     NCMBRequest.prototype.data = function (params) {
-        if (params === void 0) { params = {}; }
+        if (params instanceof FormData)
+            return params;
         var data = __assign({}, params);
         delete data.createDate;
         delete data.updateDate;
@@ -142,36 +158,46 @@ var NCMBRequest = /** @class */ (function () {
                     iso: value.toISOString()
                 };
             }
+            if (value && value.toJSON) {
+                data[key] = value.toJSON();
+            }
         }
         return JSON.stringify(data);
     };
-    NCMBRequest.prototype.exec = function (method, className, queries, data, objectId) {
+    NCMBRequest.prototype.exec = function (method, className, queries, data, objectId, parse) {
         if (queries === void 0) { queries = {}; }
         if (data === void 0) { data = {}; }
         if (objectId === void 0) { objectId = null; }
+        if (parse === void 0) { parse = true; }
         return __awaiter(this, void 0, void 0, function () {
-            var time, sig, headers, res, text, json;
+            var time, sig, headers, url, body, res, text, json;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         time = (new Date).toISOString();
                         sig = NCMBRequest.ncmb.signature.create(method, time, className, queries, objectId);
                         headers = {
-                            'X-NCMB-Signature': sig,
-                            'Content-Type': 'application/json'
+                            'X-NCMB-Signature': sig
                         };
+                        if (!(data instanceof FormData)) {
+                            headers['Content-Type'] = 'application/json';
+                        }
                         headers[NCMBRequest.ncmb.applicationKeyName] = NCMBRequest.ncmb.applicationKey;
                         headers[NCMBRequest.ncmb.timestampName] = time;
                         if (NCMBRequest.ncmb.sessionToken) {
                             headers[NCMBRequest.ncmb.sessionTokenHeader] = NCMBRequest.ncmb.sessionToken;
                         }
-                        return [4 /*yield*/, NCMBRequest.ncmb.fetch(NCMBRequest.ncmb.url(className, queries, objectId), {
+                        url = NCMBRequest.ncmb.url(className, queries, objectId);
+                        body = ['POST', 'PUT'].indexOf(method) > -1 ? this.data(data) : null;
+                        return [4 /*yield*/, NCMBRequest.ncmb.fetch(url, {
                                 method: method,
                                 headers: headers,
-                                body: ['POST', 'PUT'].indexOf(method) > -1 ? this.data(data) : null
+                                body: body
                             })];
                     case 1:
                         res = _a.sent();
+                        if (!parse)
+                            return [2 /*return*/, res];
                         return [4 /*yield*/, res.text()];
                     case 2:
                         text = _a.sent();
@@ -180,9 +206,10 @@ var NCMBRequest = /** @class */ (function () {
                         }
                         json = JSON.parse(text);
                         if (json.code) {
-                            console.log(NCMBRequest.ncmb.url(className, queries, objectId));
-                            console.log(headers);
-                            console.log(json);
+                            console.error(method + " " + url);
+                            console.error(body);
+                            console.error(headers);
+                            console.error(json);
                             throw new Error(json.error);
                         }
                         return [2 /*return*/, json];

@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.NCMBRequest = exports.NCMBPush = exports.NCMBGeoPoint = exports.NCMBAcl = exports.NCMBUser = exports.NCMBInstallation = exports.NCMBQuery = exports.NCMBObject = void 0;
+exports.NCMBFile = exports.NCMBRelation = exports.NCMBRole = exports.NCMBRequest = exports.NCMBPush = exports.NCMBGeoPoint = exports.NCMBAcl = exports.NCMBUser = exports.NCMBInstallation = exports.NCMBQuery = exports.NCMBObject = void 0;
 var object_1 = require("./libs/object");
 exports.NCMBObject = object_1["default"];
 var signature_1 = require("./libs/signature");
@@ -18,6 +18,12 @@ var geopoint_1 = require("./libs/geopoint");
 exports.NCMBGeoPoint = geopoint_1["default"];
 var push_1 = require("./libs/push");
 exports.NCMBPush = push_1["default"];
+var role_1 = require("./libs/role");
+exports.NCMBRole = role_1["default"];
+var relation_1 = require("./libs/relation");
+exports.NCMBRelation = relation_1["default"];
+var file_1 = require("./libs/file");
+exports.NCMBFile = file_1["default"];
 var crypto = require("crypto");
 var node_fetch_1 = require("node-fetch");
 var uuid_1 = require("uuid");
@@ -43,12 +49,14 @@ var NCMB = /** @class */ (function () {
         installation_1["default"].ncmb = this;
         user_1["default"].ncmb = this;
         push_1["default"].ncmb = this;
+        role_1["default"].ncmb = this;
+        file_1["default"].ncmb = this;
     };
     NCMB.prototype.path = function (className, objectId) {
         if (className.indexOf('/') === 0) {
             return "/" + this.version + className + "/" + (objectId || '');
         }
-        if (['installations', 'users', 'files', 'push'].indexOf(className) > -1) {
+        if (['installations', 'users', 'files', 'push', 'roles'].indexOf(className) > -1) {
             return "/" + this.version + "/" + className + "/" + (objectId || '');
         }
         return "/" + this.version + "/classes/" + className + "/" + (objectId || '');

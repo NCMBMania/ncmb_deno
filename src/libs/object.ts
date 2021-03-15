@@ -1,4 +1,4 @@
-import NCMB, { NCMBAcl, NCMBInstallation, NCMBUser, NCMBQuery, NCMBPush, NCMBRole } from '../index'
+import NCMB, { NCMBAcl, NCMBInstallation, NCMBUser, NCMBQuery, NCMBPush, NCMBRole, NCMBFile } from '../index'
 import { NCMBPointer } from '../@types/misc'
 
 class NCMBObject {
@@ -108,7 +108,8 @@ class NCMBObject {
   }
 
   async delete(ncmb?: NCMB): Promise<boolean> {
-    return await (ncmb || NCMBObject.ncmb).request.delete(this._name, this._fields.objectId)
+    const key = (this instanceof NCMBFile) ? this._fields.fileName : this._fields.objectId
+    return await (ncmb || NCMBObject.ncmb).request.delete(this._name, key)
   }
 
   toPointer(): NCMBPointer {

@@ -57,8 +57,8 @@ class NCMBQuery {
     return this.setOperand(key, exist, '$exists')
   }
 
-  regularExpressionTo(key: string, regex: string): NCMBQuery {
-    return this.setOperand(key, regex, '$regex')
+  regularExpressionTo(key: string, regex: RegExp): NCMBQuery {
+    return this.setOperand(key, regex.toString().slice(1, -1), '$regex')
   }
   
   inArray(key: string, values: any): NCMBQuery {

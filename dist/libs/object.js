@@ -167,13 +167,23 @@ var NCMBObject = /** @class */ (function () {
     };
     NCMBObject.prototype["delete"] = function (ncmb) {
         return __awaiter(this, void 0, void 0, function () {
+            var key;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, (ncmb || NCMBObject.ncmb).request["delete"](this._name, this._fields.objectId)];
+                    case 0:
+                        key = (this instanceof index_1.NCMBFile) ? this._fields.fileName : this._fields.objectId;
+                        return [4 /*yield*/, (ncmb || NCMBObject.ncmb).request["delete"](this._name, key)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
+    };
+    NCMBObject.prototype.toPointer = function () {
+        return {
+            '__type': 'Pointer',
+            'className': this._name,
+            'objectId': this.get('objectId')
+        };
     };
     NCMBObject.prototype.toJSON = function () {
         if (!this.get('objectId')) {

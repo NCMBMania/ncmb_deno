@@ -92,7 +92,7 @@ describe("Object test:", () => {
         catch (e) {
         }
         await NCMBUser.login("admin", "admin");
-        hello.fetch();
+        await hello.fetch();
         assert.equal(hello.get("number"), 100);
         await hello.delete();
         await NCMBUser.logout();

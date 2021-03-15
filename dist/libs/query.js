@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var index_1 = require("../index");
 var NCMBQuery = /** @class */ (function () {
     function NCMBQuery(name) {
         this._className = name;
@@ -80,7 +81,7 @@ var NCMBQuery = /** @class */ (function () {
         return this.setOperand(key, exist, '$exists');
     };
     NCMBQuery.prototype.regularExpressionTo = function (key, regex) {
-        return this.setOperand(key, regex, '$regex');
+        return this.setOperand(key, regex.toString().slice(1, -1), '$regex');
     };
     NCMBQuery.prototype.inArray = function (key, values) {
         if (!Array.isArray(values))
@@ -176,6 +177,29 @@ var NCMBQuery = /** @class */ (function () {
         if (!this._queries.where[name])
             this._queries.where[name] = {};
         this._queries.where[name]['$inQuery'] = query.getSelectParams();
+        return this;
+    };
+    NCMBQuery.prototype.relatedTo = function (obj, key) {
+        if (!this._queries.where)
+            this._queries.where = {};
+        var className;
+        if (obj instanceof index_1.NCMBUser) {
+            className = 'user';
+        }
+        else if (obj instanceof index_1.NCMBRole) {
+            className = 'role';
+        }
+        else {
+            className = obj._name;
+        }
+        this._queries.where['$relatedTo'] = {
+            object: {
+                __type: 'Pointer',
+                className: className,
+                objectId: obj.get('objectId')
+            },
+            key: key
+        };
         return this;
     };
     NCMBQuery.prototype.getClassName = function () {

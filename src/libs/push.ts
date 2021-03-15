@@ -39,7 +39,7 @@ class NCMBPush extends NCMBObject {
 
   static async open(deviceType: string, deviceToken: string, id: string): Promise<boolean> {
     const r = new NCMBRequest
-    const json = await NCMBPush.ncmb.request.exec('POST', `/${NCMBPush.ncmb.version}/push/${id}/openNumber`, {}, { deviceType, deviceToken })
+    const json = await NCMBPush.ncmb.request.exec('POST', `/${NCMBPush.ncmb.version}/push/${id}/openNumber`, {}, { deviceType, deviceToken }) as {[s: string]: any}
     return !!json.updateDate
   }
 }
