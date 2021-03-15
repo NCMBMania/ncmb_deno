@@ -1,5 +1,5 @@
 import NCMB, { NCMBObject, NCMBRole, NCMBUser } from '../ncmb.ts';
-import { JsonObject, NCMBRelationFormat } from "../@types/misc";
+import { JsonObject, NCMBRelationFormat } from "../@types/misc.d.ts";
 class NCMBRelation {
     private relatedClass: string | null = null;
     private fields: JsonObject = {};

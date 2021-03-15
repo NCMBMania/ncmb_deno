@@ -9,12 +9,13 @@ import NCMBGeoPoint from './libs/geopoint.ts'
 import NCMBPush from './libs/push.ts'
 import NCMBRole from './libs/role.ts'
 import NCMBRelation from './libs/relation.ts'
+import NCMBFile from './libs/file.ts'
 
 import { HmacSha256 } from "https://deno.land/std/hash/sha256.ts"
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
 
-export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint, NCMBPush, NCMBRequest, NCMBRole, NCMBRelation}
+export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint, NCMBPush, NCMBRequest, NCMBRole, NCMBRelation, NCMBFile}
 
 export default class NCMB {
   applicationKey: string
@@ -47,6 +48,9 @@ export default class NCMB {
     NCMBObject.ncmb = this
     NCMBInstallation.ncmb = this
     NCMBUser.ncmb = this
+    NCMBPush.ncmb = this
+    NCMBRole.ncmb = this
+    NCMBFile.ncmb = this
   }
 
   path(className: string, objectId: string|null): string {

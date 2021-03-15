@@ -1,6 +1,6 @@
 import NCMB, { NCMBQuery, NCMBObject, NCMBAcl, NCMBRequest } from '../ncmb.ts';
 import * as FormData from "form-data";
-import { JsonObject } from "../@types/Misc";
+import { JsonObject } from "../@types/misc.d.ts";
 import * as FileType from "file-type";
 class NCMBFile extends NCMBObject {
     static ncmb: NCMB;

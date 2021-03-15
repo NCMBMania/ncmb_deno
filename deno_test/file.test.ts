@@ -1,15 +1,28 @@
-import NCMB, { NCMBObject, NCMBAcl, NCMBQuery, NCMBUser, NCMBGeoPoint } from '../deno/ncmb.ts'
+import NCMB, { NCMBObject, NCMBAcl, NCMBQuery, NCMBUser, NCMBGeoPoint, NCMBFile } from '../deno/ncmb.ts'
 import { readJson } from 'https://deno.land/std@0.66.0/fs/read_json.ts'
 import {
   assertEquals,
   assertArrayContains,
 } from "https://deno.land/std@0.65.0/testing/asserts.ts";
+import fs from "https://deno.land/std@0.90.0/fs/mod.ts"
 
 const config = await readJson('./config.json') as { [s: string]: string }
 const applicationKey = config.applicationKey
 const clientKey = config.clientKey
 
 new NCMB(applicationKey, clientKey)
+
+function promisify(original) {
+  if (typeof original !== 'function') throw new TypeError();
+  return function(...args) {
+    return new Promise((resolve, reject) => {
+      original.call(this, ...args, (err, ...values) => {
+        if (err) reject(err);
+        else resolve(...values);
+      })
+    })
+  }
+}
 
 Deno.test({
   name: "Upload text as text file",
@@ -23,7 +36,6 @@ Deno.test({
 Deno.test({
   name: "Upload binary from local file",
   fn: async function () {
-    this.timeout(100000);
     const fileName = 'test.jpg';
     const blob = await promisify(fs.readFile)(`./src/tests/${fileName}`);
     const file = await NCMBFile.upload(fileName, blob);

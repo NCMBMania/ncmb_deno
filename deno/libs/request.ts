@@ -71,7 +71,7 @@ class NCMBRequest {
         [s: string]: any;
     } | FormData): string | FormData {
         if (params instanceof FormData)
-            return params;
+            return params as FormData;
         const data = { ...params };
         delete data.createDate;
         delete data.updateDate;
