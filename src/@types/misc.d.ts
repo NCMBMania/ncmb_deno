@@ -20,4 +20,23 @@ export type authData = {
   expiration_date?: dateFormat
 }
 
-export type allowType = string | Date | number | object | null | NCMBUser | NCMBAcl | NCMBObject | /* NCMBPush | */ NCMBInstallation;
+export type allowType = string | Date | number | object | null | NCMBUser | NCMBAcl | NCMBObject | /* NCMBPush | */ NCMBInstallation | JsonObject;
+export type JsonObject = {
+  [key:string] : allowType
+};
+
+export type roleJson = {
+  belongUser?: JsonObject;
+  belongRole?: JsonObject;
+}
+
+export type NCMBPointer = {
+  objectId: string;
+  __type?: string;
+  className?: string;
+}
+
+export type NCMBRelationFormat = {
+  __op: string;
+  objects: NCMBPointer[]
+}

@@ -1,9 +1,4 @@
-// @ts-ignore TS2691
-import NCMB from '../index.ts'
-// @ts-ignore TS2691
-import NCMBObject from './object.ts'
-// @ts-ignore TS2691
-import NCMBAcl from './acl.ts'
+import NCMB, { NCMBInstallation, NCMBPush, NCMBRole, NCMBAcl, NCMBObject, NCMBUser } from '../index'
 
 class NCMBRequest {
   static ncmb: NCMB
@@ -11,10 +6,19 @@ class NCMBRequest {
   async get(className: string, queries = {}): Promise<NCMBObject[]> {
     const result = await this.exec('GET', className, queries)
     return result.results.map((o: { [s: string]: any }) => {
-      const obj = new NCMBObject(className)
+      const obj = this.getObject(className)
       obj.sets(o)
       return obj
     })
+  }
+
+  getObject(className: string): NCMBObject | NCMBRole | NCMBUser {
+    if (className === 'roles') return new NCMBRole()
+    if (className === 'users') return new NCMBUser()
+    if (className === 'installations') return new NCMBInstallation()
+    // if (className === 'files')
+    if (className === 'push') return new NCMBPush()
+    return new NCMBObject(className)
   }
 
   async getWithCount(className: string, queries: {[s: string]: any} = {}): Promise<{count: number, results: NCMBObject[]}> {
@@ -56,6 +60,9 @@ class NCMBRequest {
           iso: (<Date> value).toISOString()
         }
       }
+      if (value && value.toJSON) {
+        data[key] = value.toJSON()
+      }
     }
     return JSON.stringify(data)
   }
@@ -83,9 +90,9 @@ class NCMBRequest {
     }
     const json = JSON.parse(text)
     if (json.code) {
-      console.log(NCMBRequest.ncmb.url(className, queries, objectId))
-      console.log(headers)
-      console.log(json)
+      console.log(['POST', 'PUT'].indexOf(method) > -1 ? this.data(data) : null)
+      console.error(headers)
+      console.error(json)
       throw new Error(json.error)
     }
     return json

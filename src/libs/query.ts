@@ -1,4 +1,4 @@
-import NCMB, { NCMBGeoPoint, NCMBObject } from '../index';
+import NCMB, { NCMBGeoPoint, NCMBObject, NCMBUser, NCMBRole } from '../index';
 
 class NCMBQuery {
   static ncmb: NCMB
@@ -159,6 +159,27 @@ class NCMBQuery {
     return this;
   }
   
+  relatedTo(obj: NCMBObject | NCMBUser | NCMBRole, key: string): NCMBQuery {
+    if (!this._queries.where) this._queries.where = {}
+    let className: string;
+    if (obj instanceof NCMBUser) {
+      className = 'user'
+    } else if (obj instanceof NCMBRole) {
+      className = 'role'
+    } else {
+      className = obj._name
+    }
+    this._queries.where['$relatedTo'] = {
+      object: {
+        __type: 'Pointer',
+        className,
+        objectId: obj.get('objectId')
+      },
+      key
+    }
+    return this;
+  }
+
   getClassName(): string {
     switch (this._className) {
       case 'users':

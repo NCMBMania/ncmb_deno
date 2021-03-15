@@ -6,14 +6,16 @@ import NCMBInstallation from './libs/installation'
 import NCMBUser from './libs/user'
 import NCMBAcl from './libs/acl'
 import NCMBGeoPoint from './libs/geopoint'
-import NCMBPush from './libs/push';
+import NCMBPush from './libs/push'
+import NCMBRole from './libs/role'
+import NCMBRelation from './libs/relation'
 
 import * as crypto from 'crypto';
 import fetch, { Response } from 'node-fetch'
 import { v4 as uuidv4 } from 'uuid'
 import { CLIENT_RENEG_WINDOW } from 'tls'
 
-export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint, NCMBPush, NCMBRequest }
+export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint, NCMBPush, NCMBRequest, NCMBRole, NCMBRelation }
 
 export default class NCMB {
   applicationKey: string
@@ -48,13 +50,14 @@ export default class NCMB {
     NCMBInstallation.ncmb = this
     NCMBUser.ncmb = this
     NCMBPush.ncmb = this
+    NCMBRole.ncmb = this
   }
 
   path(className: string, objectId: string|null): string {
     if (className.indexOf('/') === 0) {
       return `/${this.version}${className}/${objectId || ''}`;
     }
-    if (['installations', 'users', 'files', 'push'].indexOf(className) > -1) {
+    if (['installations', 'users', 'files', 'push', 'roles'].indexOf(className) > -1) {
       return `/${this.version}/${className}/${objectId || ''}`;
     }
     return `/${this.version}/classes/${className}/${objectId || ''}`;

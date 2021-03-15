@@ -32,7 +32,7 @@ class NCMBUser extends NCMBObject {
   }
   
   async signUpByAccount(): Promise<boolean> {
-    const json = await NCMBUser.ncmb.request.exec('GET', '/login', this._fields)
+    const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, this._fields)
     NCMBUser.ncmb.sessionToken = json.sessionToken
     delete json.sessionToken
     this.sets(json)
@@ -48,7 +48,7 @@ class NCMBUser extends NCMBObject {
       };
       delete auth.expires;
     }
-    const fields = { authData: {[s: string]: authData}};
+    const fields: { authData: {[s: string]: authData}} = {authData: {}};
     fields.authData[provider] = auth;
     const json = await NCMBUser.ncmb.request.exec('POST', '/users', {}, fields)
     const user = new NCMBUser()
@@ -105,12 +105,8 @@ class NCMBUser extends NCMBObject {
 
   static async loginAsAnonymous(): Promise<NCMBUser | null> {
     const uuid = NCMBUser.ncmb.uuid()
-    const user = new NCMBUser;
-    if (NCMBUser.signUpWith('anonymous', { id: uuid })) {
-      return user
-    } else {
-      return null
-    }
+    const user = NCMBUser.signUpWith('anonymous', { id: uuid })
+    return user
   }
 }
 

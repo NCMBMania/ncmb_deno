@@ -31,16 +31,25 @@ describe('Object test:', () => {
   })
 
   it('Send sign up email', async () => {
-    await NCMBUser.requestSignUpEmail(config.testEmailAddress)
+    // await NCMBUser.requestSignUpEmail(config.emailAddress)
   })
 
   it('Login with email', async () => {
-    const user = await NCMBUser.loginWithEmail(config.emailAddress, config.password)
+    const user = await NCMBUser.loginWithEmail(config.emailAddress, config.emailPassword)
     assert.equal(!!user.get('objectId'), true)
   })
 
   it('Request password reset email', async () => {
-    await NCMBUser.requestPasswordReset(config.emailAddress)
+    // await NCMBUser.requestPasswordReset(config.emailAddress)
   })
 
+  it('Sign in with Facebook', async () => {
+    const params = {
+      id: config.facebook.id,
+      access_token: config.facebook.accessToken,
+      expires: 3600 * 1000,
+    }
+    const user = await NCMBUser.signUpWith('facebook', params)
+    assert.equal(!!user.get('objectId'), true)
+  })
 })
