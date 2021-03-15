@@ -12,8 +12,7 @@ const clientKey = config.clientKey
 
 new NCMB(applicationKey, clientKey)
 
-function promisify(original) {
-  if (typeof original !== 'function') throw new TypeError();
+function promisify(original: Function) {
   return function(...args) {
     return new Promise((resolve, reject) => {
       original.call(this, ...args, (err, ...values) => {

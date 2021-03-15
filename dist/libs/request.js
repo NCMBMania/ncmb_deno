@@ -147,9 +147,12 @@ var NCMBRequest = /** @class */ (function () {
         if (params instanceof FormData)
             return params;
         var data = __assign({}, params);
-        delete data.createDate;
-        delete data.updateDate;
-        delete data.objectId;
+        for (var _i = 0, _a = ['createDate', 'updateDate', 'objectId']; _i < _a.length; _i++) {
+            var key = _a[_i];
+            if (key in data) {
+                delete data.createDate;
+            }
+        }
         for (var key in data) {
             var value = data[key];
             if (value instanceof Date) {

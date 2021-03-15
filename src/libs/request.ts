@@ -13,7 +13,7 @@ class NCMBRequest {
     })
   }
 
-  getObject(className: string): NCMBObject | NCMBRole | NCMBUser {
+  getObject(className: string): NCMBObject | NCMBRole | NCMBUser | NCMBFile {
     if (className === 'roles') return new NCMBRole()
     if (className === 'users') return new NCMBUser()
     if (className === 'installations') return new NCMBInstallation()
@@ -52,9 +52,11 @@ class NCMBRequest {
   data(params: { [s: string]: any } | FormData): string | FormData {
     if (params instanceof FormData) return params
     const data = {...params}
-    delete data.createDate
-    delete data.updateDate
-    delete data.objectId
+    for (const key of ['createDate', 'updateDate', 'objectId']) {
+      if (key in data) {
+        delete data.createDate
+      }
+    }
     for (const key in data) {
       const value = data[key]
       if (value instanceof Date) {

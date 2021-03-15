@@ -9,8 +9,7 @@ import * as fs  from 'fs'
     const filePath = `${dir}${file}`;
     let str = await promisify(fs.readFile)(filePath, 'utf-8')
     str = str.replace(/from ".\.\/index.ts"/g, "from '../ncmb.ts'")
-    str = str.replace(/from '..\/@types\/misc'/g, "from '../@types/misc.d.ts'")
-    
+    str = str.replace(/from "..\/@types\/misc"/g, "from '../@types/misc.d.ts'")    
     await promisify(fs.writeFile)(filePath, str)
   }
 })();

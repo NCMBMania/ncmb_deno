@@ -1,5 +1,5 @@
 import NCMB, { NCMBAcl, NCMBInstallation, NCMBUser, NCMBQuery, NCMBPush, NCMBRole, NCMBFile } from '../ncmb.ts';
-import { NCMBPointer } from "../@types/misc.d.ts";
+import { NCMBPointer } from '../@types/misc.d.ts';
 class NCMBObject {
     static ncmb: NCMB;
     public _name: string;

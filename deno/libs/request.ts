@@ -14,7 +14,7 @@ class NCMBRequest {
             return obj;
         });
     }
-    getObject(className: string): NCMBObject | NCMBRole | NCMBUser {
+    getObject(className: string): NCMBObject | NCMBRole | NCMBUser | NCMBFile {
         if (className === "roles")
             return new NCMBRole();
         if (className === "users")
@@ -67,17 +67,17 @@ class NCMBRequest {
         const res = await this.exec("DELETE", className, {}, {}, objectId);
         return Object.keys(res).length === 0;
     }
-    data(params: {
-        [s: string]: any;
-    } | FormData): string | FormData {
+    data(params: {[s: string]: any } | FormData): string | FormData {
         if (params instanceof FormData)
             return params as FormData;
-        const data = { ...params };
-        delete data.createDate;
-        delete data.updateDate;
-        delete data.objectId;
+        const data: {[s: string]: any } = { ...params };
+        for (const key of ["createDate", "updateDate", "objectId"]) {
+            if (key in data) {
+                delete data[key];
+            }
+        }
         for (const key in data) {
-            const value = data[key];
+            const value: any = data[key];
             if (value instanceof Date) {
                 data[key] = {
                     __type: "Date",

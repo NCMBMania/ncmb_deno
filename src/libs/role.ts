@@ -52,11 +52,12 @@ class NCMBRole extends NCMBObject {
     if (!json[belongType]) {
       json[belongType] = {
         '__op': 'AddRelation',
-        'objects': []
+        
       }
+      json.objects = []
     }
     this.getObjects(name).forEach((obj: NCMBUser | NCMBRole) => {
-      json[belongType].objects.push({
+      json[belongType]!.objects.push({
         '__type': 'Pointer',
         'className': name.toLowerCase(),
         'objectId': obj.get('objectId')

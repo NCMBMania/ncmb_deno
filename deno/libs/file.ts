@@ -1,6 +1,6 @@
 import NCMB, { NCMBQuery, NCMBObject, NCMBAcl, NCMBRequest } from '../ncmb.ts';
 import * as FormData from "form-data";
-import { JsonObject } from "../@types/misc.d.ts";
+import { JsonObject } from '../@types/misc.d.ts';
 import * as FileType from "file-type";
 class NCMBFile extends NCMBObject {
     static ncmb: NCMB;
@@ -16,7 +16,7 @@ class NCMBFile extends NCMBObject {
             const form = new FormData();
             contentType = contentType || "application/octet-stream";
             if (fileData instanceof Buffer) {
-                const ft = await FileType.fromBuffer(fileData);
+                const ft = await FileType.fromBuffer(fileData as Buffer);
                 form.append("file", fileData, { contentType: ft?.mime });
             }
             else {

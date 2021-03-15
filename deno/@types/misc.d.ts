@@ -17,18 +17,22 @@ export type authData = {
     expires?: number;
     expiration_date?: dateFormat;
 };
-export type allowType = string | Date | number | object | null | NCMBUser | NCMBAcl | NCMBObject | /* NCMBPush | */ NCMBInstallation | JsonObject;
-export type JsonObject = {
-    [key: string]: allowType;
-};
-export type roleJson = {
-    belongUser?: JsonObject;
-    belongRole?: JsonObject;
-};
 export type NCMBPointer = {
     objectId: string;
     __type?: string;
     className?: string;
+};
+export type allowType = string | Date | number | object | null | NCMBUser | NCMBAcl | NCMBObject | /* NCMBPush | */ NCMBInstallation | JsonObject | NCMBPointer | NCMBPointer[];
+export type JsonObject = {
+    [key: string]: allowType;
+};
+export type roleBaseJson = {
+    __op: string;
+    objects: NCMBPointer[];
+}
+export type roleJson = {
+    belongUser?: roleBaseJson;
+    belongRole?: roleBaseJson;
 };
 export type NCMBRelationFormat = {
     __op: string;

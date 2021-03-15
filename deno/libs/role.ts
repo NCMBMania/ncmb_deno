@@ -1,5 +1,5 @@
 import NCMB, { NCMBObject, NCMBQuery, NCMBUser } from '../ncmb.ts';
-import { JsonObject, roleJson } from "../@types/misc.d.ts";
+import { JsonObject, roleJson, NCMBPointer, roleBaseJson } from "../@types/misc.d.ts";
 class NCMBRole extends NCMBObject {
     static ncmb: NCMB;
     public users: NCMBUser[] = [];
@@ -38,23 +38,19 @@ class NCMBRole extends NCMBObject {
             return this.roles;
         }
     }
-    convert(name: string): JsonObject {
-        const belongType = `belong${name}`;
-        const json: JsonObject = {};
-        if (!json[belongType]) {
-            json[belongType] = {
-                "__op": "AddRelation",
-                "objects": []
-            };
+    convert(name: string): roleBaseJson {
+        const json: roleBaseJson = {
+            __op: "AddRelation",
+            objects: []
         }
         this.getObjects(name).forEach((obj: NCMBUser | NCMBRole) => {
-            json[belongType].objects.push({
-                "__type": "Pointer",
-                "className": name.toLowerCase(),
-                "objectId": obj.get("objectId")
-            });
+            json.objects!.push({
+                __type: "Pointer",
+                className: name.toLowerCase(),
+                objectId: obj.get("objectId")
+            } as NCMBPointer);
         });
-        return json[belongType];
+        return json;
     }
     toJSON(): object {
         const json = this._fields;
