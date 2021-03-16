@@ -17,7 +17,7 @@ describe("Managing File", () => {
         this.timeout(100000);
         const fileName = "test.jpg";
         const blob = await promisify(fs.readFile)(`./src/tests/${fileName}`);
-        const file = await NCMBFile.upload(fileName, blob);
+        const file = await NCMBFile.upload(fileName, blob, undefined, "image/jpeg");
         assert.equal(fileName, file.get("fileName"));
     });
     it("Upload file and delete it", async () => {
@@ -38,7 +38,7 @@ describe("Managing File", () => {
         this.timeout(100000);
         const fileName = "test.jpg";
         const blob = await promisify(fs.readFile)(`./src/tests/${fileName}`);
-        const file = await NCMBFile.upload(fileName, blob);
+        const file = await NCMBFile.upload(fileName, blob, undefined, "image/jpeg");
         assert.equal(fileName, file.get("fileName"));
         const download = await file.download("binary") as Blob;
         assert.equal(download.type, "image/jpeg");

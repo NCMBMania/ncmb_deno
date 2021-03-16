@@ -23,7 +23,7 @@ export type NCMBPointer = {
   className?: string;
 }
 
-export type allowType = string | Date | number | object | null | NCMBUser | NCMBAcl | NCMBObject | /* NCMBPush | */ NCMBInstallation | JsonObject | NCMBPointer | NCMBPointer[];
+export type allowType = string | boolean | Date | number | object | null | NCMBUser | NCMBAcl | NCMBObject | /* NCMBPush | */ NCMBInstallation | JsonObject | NCMBPointer | NCMBPointer[];
 export type JsonObject = {
   [key:string] : allowType
 }

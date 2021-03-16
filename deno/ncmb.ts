@@ -65,6 +65,10 @@ export default class NCMB {
     return `/${this.version}/classes/${className}/${objectId || ''}`;
   }
 
+  contentType(contentType: string): string {
+    return contentType
+  }
+
   url(className: string, queries:{ [s: string]: any } = {}, objectId: string|null) {
     const query = Object.keys(queries).sort().map(k => {
       const val = typeof queries[k] === 'object' ? JSON.stringify(queries[k]) : queries[k]

@@ -52,6 +52,9 @@ var NCMB = /** @class */ (function () {
         role_1["default"].ncmb = this;
         file_1["default"].ncmb = this;
     };
+    NCMB.prototype.contentType = function (contentType) {
+        return { contentType: contentType };
+    };
     NCMB.prototype.path = function (className, objectId) {
         if (className.indexOf('/') === 0) {
             return "/" + this.version + className + "/" + (objectId || '');

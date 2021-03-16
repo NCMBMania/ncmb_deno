@@ -20,9 +20,9 @@ class NCMBFile extends NCMBObject {
       const form = new FormData();
       contentType = contentType || 'application/octet-stream';
       if (typeof fileData === 'string') {
-        form.append('file', fileData, contentType );
+        form.append('file', fileData, NCMBFile.ncmb.contentType(contentType));
       } else {
-        form.append('file', fileData as Blob, contentType);
+        form.append('file', fileData as Blob, NCMBFile.ncmb.contentType(contentType));
       }
       form.append('acl', JSON.stringify((acl || new NCMBAcl).toJSON()));
       const json = await r.exec('POST', 'files', {}, form, fileName)

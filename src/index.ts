@@ -60,6 +60,10 @@ export default class NCMB {
     NCMBFile.ncmb = this
   }
 
+  contentType(contentType: string): object {
+    return { contentType }
+  }
+  
   path(className: string, objectId: string|null): string {
     if (className.indexOf('/') === 0) {
       return `/${this.version}${className}/${objectId || ''}`;

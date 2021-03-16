@@ -76,7 +76,7 @@ var NCMBFile = /** @class */ (function (_super) {
                             form.append('file', fileData, contentType);
                         }
                         else {
-                            form.append('file', fileData, contentType);
+                            form.append('file', fileData, NCMBFile.ncmb.contentType(contentType));
                         }
                         form.append('acl', JSON.stringify((acl || new index_1.NCMBAcl).toJSON()));
                         return [4 /*yield*/, r.exec('POST', 'files', {}, form, fileName)];

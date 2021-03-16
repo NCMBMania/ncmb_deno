@@ -19,7 +19,7 @@ class NCMBFile extends NCMBObject {
                 form.append("file", fileData, contentType);
             }
             else {
-                form.append("file", fileData as Blob, contentType);
+                form.append("file", fileData as Blob, NCMBFile.ncmb.contentType(contentType));
             }
             form.append("acl", JSON.stringify((acl || new NCMBAcl).toJSON()));
             const json = await r.exec("POST", "files", {}, form, fileName);

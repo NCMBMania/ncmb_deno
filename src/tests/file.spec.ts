@@ -20,7 +20,7 @@ describe('Managing File', () => {
     this.timeout(100000);
     const fileName = 'test.jpg';
     const blob = await promisify(fs.readFile)(`./src/tests/${fileName}`);
-    const file = await NCMBFile.upload(fileName, blob);
+    const file = await NCMBFile.upload(fileName, blob, undefined, 'image/jpeg');
     assert.equal(fileName, file.get('fileName'));
   });
 
@@ -34,17 +34,18 @@ describe('Managing File', () => {
   it('Upload text and download it', async () => {
     const text = '1,2,3';
     const fileName = 'test.csv';
-    const file = await NCMBFile.upload(fileName, text);
+    const file = await NCMBFile.upload(fileName, text, undefined, 'text/csv');
     assert.equal(fileName, file.get('fileName'));
-    const download = await file.download();
-    assert.equal(text, download);
+    const download = await file.download('binary') as Blob;
+    assert.equal(text, await download.text());
+    assert.equal(download.type, 'text/csv');
   });
   
   it('Upload binary file and download it', async function() {
     this.timeout(100000);
     const fileName = 'test.jpg';
     const blob = await promisify(fs.readFile)(`./src/tests/${fileName}`);
-    const file = await NCMBFile.upload(fileName, blob);
+    const file = await NCMBFile.upload(fileName, blob, undefined, 'image/jpeg');
     assert.equal(fileName, file.get('fileName'));
     const download = await file.download('binary') as Blob;
     assert.equal(download.type, 'image/jpeg');
@@ -66,7 +67,8 @@ describe('Managing File', () => {
     assert.equal(count.length, 0);
   });
 
-  it('Upload several files', async () => {
+  it('Upload several files', async function() {
+    this.timeout(100000);
     const promises: Promise<NCMBFile>[] = [];
     for (let i = 0; i < 3; i++) {
       promises.push(NCMBFile.upload(`${i}.txt`, `Hello, #${i}`));
@@ -87,7 +89,8 @@ describe('Managing File', () => {
     await Promise.all(deletes);
   });
 
-  it('Upload file with ACL', async () => {
+  it('Upload file with ACL', async function () {
+    this.timeout(100000);
     const userNameAndPassword = 'tester1';
     const user = new NCMBUser;
     user.set('userName', userNameAndPassword).set('password', userNameAndPassword );
