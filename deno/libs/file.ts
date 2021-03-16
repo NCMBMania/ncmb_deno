@@ -1,7 +1,5 @@
-import NCMB, { NCMBQuery, NCMBObject, NCMBAcl, NCMBRequest } from '../ncmb.ts';
-import * as FormData from "form-data";
+import NCMB, { NCMBQuery, NCMBObject, NCMBAcl, NCMBRequest, Buffer } from '../ncmb.ts';
 import { JsonObject } from '../@types/misc.d.ts';
-import * as FileType from "file-type";
 class NCMBFile extends NCMBObject {
     static ncmb: NCMB;
     constructor() {
@@ -10,17 +8,15 @@ class NCMBFile extends NCMBObject {
     static query(): NCMBQuery {
         return new NCMBQuery("files");
     }
-    static async upload(fileName: string, fileData: string | Buffer, acl?: NCMBAcl, contentType?: string | null): Promise<NCMBFile> {
+    static async upload(fileName: string, fileData: string | Buffer | Blob, acl?: NCMBAcl, contentType?: string | null): Promise<NCMBFile> {
         const r = new NCMBRequest;
         try {
             const form = new FormData();
             contentType = contentType || "application/octet-stream";
-            if (fileData instanceof Buffer) {
-                const ft = await FileType.fromBuffer(fileData as Buffer);
-                form.append("file", fileData, { contentType: ft?.mime });
-            }
-            else {
-                form.append("file", fileData, contentType);
+            if (fileData instanceof String) {
+                form.append("file", fileData as string, contentType);
+            } else {
+                form.append("file", fileData as Blob);
             }
             form.append("acl", JSON.stringify((acl || new NCMBAcl).toJSON()));
             const json = await r.exec("POST", "files", {}, form, fileName);

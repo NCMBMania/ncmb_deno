@@ -14,8 +14,9 @@ import NCMBFile from './libs/file.ts'
 import { HmacSha256 } from "https://deno.land/std/hash/sha256.ts"
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
+import Buffer from "https://deno.land/std@0.76.0/node/buffer.ts";
 
-export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint, NCMBPush, NCMBRequest, NCMBRole, NCMBRelation, NCMBFile}
+export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint, NCMBPush, NCMBRequest, NCMBRole, NCMBRelation, NCMBFile, Buffer}
 
 export default class NCMB {
   applicationKey: string
@@ -28,6 +29,7 @@ export default class NCMB {
   request: NCMBRequest
   sessionToken: string | null = null
   sessionTokenHeader: string
+
   constructor(applicationKey: string, clientKey: string) {
     this.applicationKey = applicationKey
     this.clientKey = clientKey
@@ -99,7 +101,10 @@ export default class NCMB {
     }
     return result
   }
+
   fetch(url: string, options: any): Promise<Response> {
     return fetch(url, options)
   }
+
+
 }

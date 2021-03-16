@@ -6,6 +6,8 @@ import NCMBObject from '../libs/object.ts'
 // @ts-ignore TS2691
 import NCMBUser from '../libs/user.ts';
 // @ts-ignore TS2691
+import NCMBRole from '../libs/role.ts';
+// @ts-ignore TS2691
 import NCMBAcl from '../libs/acl.ts'
 
 interface dateFormat {
@@ -25,18 +27,20 @@ export type JsonObject = {
   [key:string] : allowType
 };
 
-export type roleJson = {
-  belongUser?: JsonObject;
-  belongRole?: JsonObject;
+export type roleBaseJson = {
+  __op?: string;
+  objects?: (NCMBPointer | NCMBObject | NCMBUser | NCMBRole)[];
 }
-
+export type roleJson = {
+  belongUser?: roleBaseJson;
+  belongRole?: roleBaseJson;
+};
+export type NCMBRelationFormat = {
+  __op: string;
+  objects: NCMBPointer[];
+};
 export type NCMBPointer = {
   objectId: string;
   __type?: string;
   className?: string;
-}
-
-export type NCMBRelationFormat = {
-  __op: string;
-  objects: NCMBPointer[]
 }

@@ -1,8 +1,8 @@
 import NCMB, { NCMBObject, NCMBRole, NCMBUser } from '../ncmb.ts';
-import { JsonObject, NCMBRelationFormat } from '../@types/misc.d.ts';
+import { JsonObject, NCMBRelationFormat, roleBaseJson, NCMBPointer } from '../@types/misc.d.ts';
 class NCMBRelation {
     private relatedClass: string | null = null;
-    private fields: JsonObject = {};
+    private fields: roleBaseJson = {};
     private className: string | null = null;
     constructor(className: string) {
         this.className = className;
@@ -34,7 +34,7 @@ class NCMBRelation {
             if (o._name !== this.className) {
                 throw new Error("Relation objects can be input just from instance of same class with first input.");
             }
-            this.fields.objects.push(o);
+            this.fields.objects!.push(o);
         });
         return this;
     }
@@ -52,18 +52,19 @@ class NCMBRelation {
             if (o._name !== this.className) {
                 throw new Error("Relation objects can be input just from instance of same class with first input.");
             }
-            this.fields.objects.push(o);
+            this.fields.objects!.push(o);
         });
         return this;
     }
     toJSON(): NCMBRelationFormat {
         const json: NCMBRelationFormat = {
-            __op: this.fields.__op,
+            __op: this.fields.__op as string,
             objects: []
         };
-        for (const obj of this.fields.objects) {
-            obj as NCMBObject | NCMBUser | NCMBRole;
-            json.objects.push(obj.toPointer());
+        if (this.fields.objects) {
+            for (const obj of this.fields.objects) {
+                json.objects.push((obj as NCMBObject).toPointer());
+            }
         }
         return json;
     }

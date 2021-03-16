@@ -7,6 +7,10 @@ import NCMBObject from "../libs/object.ts";
 import NCMBUser from "../libs/user.ts";
 // @ts-ignore TS2691
 import NCMBAcl from "../libs/acl.ts";
+// @ts-ignore TS2691
+import NCMBRequest from "../libs/request.ts";
+// @ts-ignore TS2691
+import NCMBRole from "../libs/role.ts";
 interface dateFormat {
     __type: string;
     iso: string;
@@ -27,8 +31,8 @@ export type JsonObject = {
     [key: string]: allowType;
 };
 export type roleBaseJson = {
-    __op: string;
-    objects: NCMBPointer[];
+    __op?: string;
+    objects?: (NCMBPointer | NCMBObject | NCMBUser | NCMBRole)[];
 }
 export type roleJson = {
     belongUser?: roleBaseJson;

@@ -1,7 +1,6 @@
 import NCMB, { NCMBQuery, NCMBObject, NCMBAcl, NCMBRequest } from '../index'
 import * as FormData from 'form-data'
 import { JsonObject } from '../@types/misc'
-import * as FileType from 'file-type'
 
 class NCMBFile extends NCMBObject {
   static ncmb: NCMB;

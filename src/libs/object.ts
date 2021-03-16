@@ -114,9 +114,9 @@ class NCMBObject {
 
   toPointer(): NCMBPointer {
     return {
-      '__type': 'Pointer',
-      'className': this._name,
-      'objectId': this.get('objectId')
+      __type: 'Pointer',
+      className: this._name,
+      objectId: this.get('objectId')
     }
   }
 

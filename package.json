@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/NCMBMania/ncmb_deno#readme",
   "dependencies": {
-    "@types/node": "^14.6.4",
     "@types/node-fetch": "^2.5.7",
     "@types/uuid": "^8.3.0",
     "file-type": "^16.3.0",
@@ -35,6 +34,7 @@
     "@types/chai": "^4.2.15",
     "@types/expect": "^24.3.0",
     "@types/mocha": "^8.2.1",
+    "@types/node": "^14.6.4",
     "chai": "^4.3.3",
     "deno-module-extension-resolver": "^0.3.0",
     "nyc": "^15.1.0",

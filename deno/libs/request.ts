@@ -1,5 +1,4 @@
 import NCMB, { NCMBInstallation, NCMBPush, NCMBRole, NCMBAcl, NCMBObject, NCMBUser, NCMBFile } from '../ncmb.ts';
-import * as FormData from "form-data";
 class NCMBRequest {
     static ncmb: NCMB;
     async get(className: string, queries = {}): Promise<NCMBObject[]> {
@@ -67,9 +66,9 @@ class NCMBRequest {
         const res = await this.exec("DELETE", className, {}, {}, objectId);
         return Object.keys(res).length === 0;
     }
-    data(params: {[s: string]: any } | FormData): string | FormData {
-        if (params instanceof FormData)
-            return params as FormData;
+    data(params: any): string | FormData {
+        if (params instanceof FormData) return params
+        params as {[s: string]: any }
         const data: {[s: string]: any } = { ...params };
         for (const key of ["createDate", "updateDate", "objectId"]) {
             if (key in data) {
@@ -92,9 +91,7 @@ class NCMBRequest {
     }
     async exec(method: string, className: string, queries: {
         [s: string]: any;
-    } = {}, data: {
-        [s: string]: any;
-    } | FormData = {}, objectId: string | null = null, parse: boolean = true): Promise<{
+    } = {}, data?: any, objectId: string | null = null, parse: boolean = true): Promise<{
         [s: string]: any;
     } | Response> {
         const time = (new Date).toISOString();

@@ -49,8 +49,9 @@ class NCMBRequest {
     return Object.keys(res).length === 0
   }
   
-  data(params: { [s: string]: any } | FormData): string | FormData {
+  data(params: any): string | FormData {
     if (params instanceof FormData) return params
+    params as { [s: string]: any }
     const data = {...params}
     for (const key of ['createDate', 'updateDate', 'objectId']) {
       if (key in data) {
@@ -76,7 +77,7 @@ class NCMBRequest {
     method: string,
     className: string,
     queries: { [s: string]: any } = {},
-    data:{ [s: string]: any } | FormData = {},
+    data?: any,
     objectId: string|null = null,
     parse: boolean = true
     ): Promise<{ [s: string]: any } | Response> {

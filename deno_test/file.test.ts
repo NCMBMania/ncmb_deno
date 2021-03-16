@@ -4,7 +4,7 @@ import {
   assertEquals,
   assertArrayContains,
 } from "https://deno.land/std@0.65.0/testing/asserts.ts";
-import fs from "https://deno.land/std@0.90.0/fs/mod.ts"
+import * as fs from "https://deno.land/std@0.90.0/fs/mod.ts"
 
 const config = await readJson('./config.json') as { [s: string]: string }
 const applicationKey = config.applicationKey
@@ -13,11 +13,15 @@ const clientKey = config.clientKey
 new NCMB(applicationKey, clientKey)
 
 function promisify(original: Function) {
-  return function(...args) {
-    return new Promise((resolve, reject) => {
-      original.call(this, ...args, (err, ...values) => {
-        if (err) reject(err);
-        else resolve(...values);
+  return function(this: Function, ...args: any) {
+    return new Promise((resolve: Function, reject: Function) => {
+      original.call(this, ...args, (err: any, ...values: any) => {
+        if (err) {
+          reject(err);
+        } else {
+          values = {...values}
+          resolve(values);
+        }
       })
     })
   }
@@ -36,7 +40,7 @@ Deno.test({
   name: "Upload binary from local file",
   fn: async function () {
     const fileName = 'test.jpg';
-    const blob = await promisify(fs.readFile)(`./src/tests/${fileName}`);
+    const blob = await Deno.readTextFile(`./src/tests/${fileName}`);
     const file = await NCMBFile.upload(fileName, blob);
     assertEquals(fileName, file.get('fileName'));
   }
@@ -68,8 +72,8 @@ Deno.test({
   name: "Upload binary file and download it",
   fn: async () => {
     const fileName = 'test.jpg';
-    const blob = await promisify(fs.readFile)(`./src/tests/${fileName}`);
-    const file = await NCMBFile.upload(fileName, blob);
+    const blob = await Deno.readFile(`./src/tests/${fileName}`);
+    const file = await NCMBFile.upload(fileName, new Blob([blob.buffer], {type: "image/jpeg"}));
     assertEquals(fileName, file.get('fileName'));
     const download = await file.download('binary') as Blob;
     assertEquals(download.type, 'image/jpeg');
@@ -126,16 +130,13 @@ Deno.test({
   name: "Upload file with ACL",
   fn: async () => {
     const userNameAndPassword = 'tester1';
-    const user = new NCMBUser;
-    user.set('userName', userNameAndPassword).set('password', userNameAndPassword );
-    await user.signUpByAccount();
-    const loginUser = await NCMBUser.login(userNameAndPassword, userNameAndPassword);
-    if (!loginUser) throw new Error('Login failed');
+    const user = await NCMBUser.signUp(userNameAndPassword, userNameAndPassword)
+    if (!user) throw new Error('Login failed');
     const acl = new NCMBAcl;
     acl
       .setPublicReadAccess(false)
-      .setUserWriteAccess(loginUser, true)
-      .setUserReadAccess(loginUser, true);
+      .setUserWriteAccess(user, true)
+      .setUserReadAccess(user, true);
     const text = '1,2,3';
     const fileName = 'acl2.csv';
     const file = await NCMBFile.upload(fileName, text, acl);
@@ -146,15 +147,15 @@ Deno.test({
       const file = new NCMBFile;
       file.set('fileName', fileName);
       await file.download();
-      assert.isTrue(false);
+      assertEquals(false, true);
     } catch (e) {
       assertEquals(e.message, 'E403001: No access with ACL.');
     }
     NCMBUser.ncmb.sessionToken = sessionToken;
     const download = await file.download();
     assertEquals(text, download);
-    file.delete();
-    loginUser.delete();
+    await file.delete();
+    await user.delete();
     NCMBUser.logout();
   }
 })
