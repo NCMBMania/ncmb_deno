@@ -3,7 +3,7 @@ import { JsonObject, NCMBRelationFormat, roleBaseJson, NCMBPointer } from '../@t
 
 class NCMBRelation {
   private relatedClass: string | null = null
-  private fields: JsonObject = {}
+  private fields: roleBaseJson = {}
   private className: string | null = null
   constructor(className: string) {
     this.className = className

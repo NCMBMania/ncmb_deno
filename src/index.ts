@@ -16,7 +16,12 @@ import fetch, { Response } from 'node-fetch'
 import { v4 as uuidv4 } from 'uuid'
 import { CLIENT_RENEG_WINDOW } from 'tls'
 
-export { NCMBObject, NCMBQuery, NCMBInstallation, NCMBUser, NCMBAcl, NCMBGeoPoint, NCMBPush, NCMBRequest, NCMBRole, NCMBRelation, NCMBFile }
+export {
+  NCMBObject, NCMBQuery, NCMBInstallation,
+  NCMBUser, NCMBAcl, NCMBGeoPoint, NCMBPush,
+  NCMBRequest, NCMBRole, NCMBRelation,
+  NCMBFile
+}
 
 export default class NCMB {
   applicationKey: string

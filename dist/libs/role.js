@@ -109,22 +109,18 @@ var NCMBRole = /** @class */ (function (_super) {
         }
     };
     NCMBRole.prototype.convert = function (name) {
-        var belongType = "belong" + name;
-        var json = {};
-        if (!json[belongType]) {
-            json[belongType] = {
-                '__op': 'AddRelation',
-                'objects': []
-            };
-        }
+        var json = {
+            __op: "AddRelation",
+            objects: []
+        };
         this.getObjects(name).forEach(function (obj) {
-            json[belongType].objects.push({
-                '__type': 'Pointer',
-                'className': name.toLowerCase(),
-                'objectId': obj.get('objectId')
+            json.objects.push({
+                __type: 'Pointer',
+                className: name.toLowerCase(),
+                objectId: obj.get('objectId')
             });
         });
-        return json[belongType];
+        return json;
     };
     NCMBRole.prototype.toJSON = function () {
         var json = this._fields;

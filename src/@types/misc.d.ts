@@ -1,14 +1,9 @@
-// @ts-ignore TS2691
-import NCMBInstallation from '../libs/installation.ts';
-// @ts-ignore TS2691
-import NCMBObject from '../libs/object.ts'
-// import NCMBRole from './libs/';
-// @ts-ignore TS2691
-import NCMBUser from '../libs/user.ts';
-// @ts-ignore TS2691
-import NCMBRole from '../libs/role.ts';
-// @ts-ignore TS2691
-import NCMBAcl from '../libs/acl.ts'
+import NCMBInstallation from '../libs/installation';
+import NCMBObject from '../libs/object'
+import NCMBUser from '../libs/user';
+import NCMBRole from '../libs/role';
+import NCMBAcl from '../libs/acl'
+import NCMBRequest from "../libs/request";
 
 interface dateFormat {
   __type: string,
@@ -22,10 +17,16 @@ export type authData = {
   expiration_date?: dateFormat
 }
 
-export type allowType = string | Date | number | object | null | NCMBUser | NCMBAcl | NCMBObject | /* NCMBPush | */ NCMBInstallation | JsonObject;
+export type NCMBPointer = {
+  objectId: string;
+  __type?: string;
+  className?: string;
+}
+
+export type allowType = string | Date | number | object | null | NCMBUser | NCMBAcl | NCMBObject | /* NCMBPush | */ NCMBInstallation | JsonObject | NCMBPointer | NCMBPointer[];
 export type JsonObject = {
   [key:string] : allowType
-};
+}
 
 export type roleBaseJson = {
   __op?: string;
@@ -34,13 +35,8 @@ export type roleBaseJson = {
 export type roleJson = {
   belongUser?: roleBaseJson;
   belongRole?: roleBaseJson;
-};
+}
 export type NCMBRelationFormat = {
   __op: string;
   objects: NCMBPointer[];
-};
-export type NCMBPointer = {
-  objectId: string;
-  __type?: string;
-  className?: string;
 }

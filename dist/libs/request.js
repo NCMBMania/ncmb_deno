@@ -146,11 +146,12 @@ var NCMBRequest = /** @class */ (function () {
     NCMBRequest.prototype.data = function (params) {
         if (params instanceof FormData)
             return params;
+        params;
         var data = __assign({}, params);
         for (var _i = 0, _a = ['createDate', 'updateDate', 'objectId']; _i < _a.length; _i++) {
             var key = _a[_i];
             if (key in data) {
-                delete data.createDate;
+                delete data[key];
             }
         }
         for (var key in data) {
@@ -169,7 +170,6 @@ var NCMBRequest = /** @class */ (function () {
     };
     NCMBRequest.prototype.exec = function (method, className, queries, data, objectId, parse) {
         if (queries === void 0) { queries = {}; }
-        if (data === void 0) { data = {}; }
         if (objectId === void 0) { objectId = null; }
         if (parse === void 0) { parse = true; }
         return __awaiter(this, void 0, void 0, function () {

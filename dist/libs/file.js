@@ -51,7 +51,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var index_1 = require("../index");
 var FormData = require("form-data");
-var FileType = require("file-type");
+// import { Buffer } from '../ncmb'
 var NCMBFile = /** @class */ (function (_super) {
     __extends(NCMBFile, _super);
     function NCMBFile() {
@@ -62,36 +62,32 @@ var NCMBFile = /** @class */ (function (_super) {
     };
     NCMBFile.upload = function (fileName, fileData, acl, contentType) {
         return __awaiter(this, void 0, void 0, function () {
-            var r, form, ft, json, file, e_1;
+            var r, form, json, file, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         r = new index_1.NCMBRequest;
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 6, , 7]);
+                        _a.trys.push([1, 3, , 4]);
                         form = new FormData();
                         contentType = contentType || 'application/octet-stream';
-                        if (!(fileData instanceof Buffer)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, FileType.fromBuffer(fileData)];
-                    case 2:
-                        ft = _a.sent();
-                        form.append('file', fileData, { contentType: ft === null || ft === void 0 ? void 0 : ft.mime });
-                        return [3 /*break*/, 4];
-                    case 3:
-                        form.append('file', fileData, contentType);
-                        _a.label = 4;
-                    case 4:
+                        if (typeof fileData === 'string') {
+                            form.append('file', fileData, contentType);
+                        }
+                        else {
+                            form.append('file', fileData, contentType);
+                        }
                         form.append('acl', JSON.stringify((acl || new index_1.NCMBAcl).toJSON()));
                         return [4 /*yield*/, r.exec('POST', 'files', {}, form, fileName)];
-                    case 5:
+                    case 2:
                         json = _a.sent();
                         file = new NCMBFile;
                         return [2 /*return*/, file.sets(json)];
-                    case 6:
+                    case 3:
                         e_1 = _a.sent();
                         throw e_1;
-                    case 7: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });

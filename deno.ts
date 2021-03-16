@@ -10,7 +10,8 @@ import * as fs  from 'fs'
     let str = await promisify(fs.readFile)(filePath, 'utf-8')
     str = str.replace(/from ".\.\/index.ts"/g, "from '../ncmb.ts'")
     str = str.replace(/from "..\/@types\/misc"/g, "from '../@types/misc.d.ts'")
-    str = str.replace('import * as FormData from "form-data"', "")
+    str = str.replace('import * as FormData from "form-data";', "")
+    str = str.replace("// import { Buffer } from '../ncmb'", 'import { Buffer } from "../ncmb.ts";')
     await promisify(fs.writeFile)(filePath, str)
   }
 })();

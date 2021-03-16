@@ -1,4 +1,5 @@
 import NCMB, { NCMBInstallation, NCMBPush, NCMBRole, NCMBAcl, NCMBObject, NCMBUser, NCMBFile } from '../ncmb.ts';
+
 class NCMBRequest {
     static ncmb: NCMB;
     async get(className: string, queries = {}): Promise<NCMBObject[]> {
@@ -67,9 +68,12 @@ class NCMBRequest {
         return Object.keys(res).length === 0;
     }
     data(params: any): string | FormData {
-        if (params instanceof FormData) return params
-        params as {[s: string]: any }
-        const data: {[s: string]: any } = { ...params };
+        if (params instanceof FormData)
+            return params;
+        params as {
+            [s: string]: any;
+        };
+        const data = { ...params };
         for (const key of ["createDate", "updateDate", "objectId"]) {
             if (key in data) {
                 delete data[key];

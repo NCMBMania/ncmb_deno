@@ -1,5 +1,7 @@
-import NCMB, { NCMBQuery, NCMBObject, NCMBAcl, NCMBRequest, Buffer } from '../ncmb.ts';
+import NCMB, { NCMBQuery, NCMBObject, NCMBAcl, NCMBRequest } from '../ncmb.ts';
+
 import { JsonObject } from '../@types/misc.d.ts';
+import { Buffer } from "../ncmb.ts";
 class NCMBFile extends NCMBObject {
     static ncmb: NCMB;
     constructor() {
@@ -13,10 +15,11 @@ class NCMBFile extends NCMBObject {
         try {
             const form = new FormData();
             contentType = contentType || "application/octet-stream";
-            if (fileData instanceof String) {
-                form.append("file", fileData as string, contentType);
-            } else {
-                form.append("file", fileData as Blob);
+            if (typeof fileData === "string") {
+                form.append("file", fileData, contentType);
+            }
+            else {
+                form.append("file", fileData as Blob, contentType);
             }
             form.append("acl", JSON.stringify((acl || new NCMBAcl).toJSON()));
             const json = await r.exec("POST", "files", {}, form, fileName);

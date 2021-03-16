@@ -63,10 +63,11 @@ var NCMBRelation = /** @class */ (function () {
             __op: this.fields.__op,
             objects: []
         };
-        for (var _i = 0, _a = this.fields.objects; _i < _a.length; _i++) {
-            var obj = _a[_i];
-            obj;
-            json.objects.push(obj.toPointer());
+        if (this.fields.objects) {
+            for (var _i = 0, _a = this.fields.objects; _i < _a.length; _i++) {
+                var obj = _a[_i];
+                json.objects.push(obj.toPointer());
+            }
         }
         return json;
     };

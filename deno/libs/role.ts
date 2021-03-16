@@ -1,5 +1,5 @@
 import NCMB, { NCMBObject, NCMBQuery, NCMBUser } from '../ncmb.ts';
-import { JsonObject, roleJson, NCMBPointer, roleBaseJson } from "../@types/misc.d.ts";
+import { JsonObject, roleJson, roleBaseJson } from "../@types/misc.d.ts";
 class NCMBRole extends NCMBObject {
     static ncmb: NCMB;
     public users: NCMBUser[] = [];
@@ -42,13 +42,13 @@ class NCMBRole extends NCMBObject {
         const json: roleBaseJson = {
             __op: "AddRelation",
             objects: []
-        }
+        };
         this.getObjects(name).forEach((obj: NCMBUser | NCMBRole) => {
             json.objects!.push({
                 __type: "Pointer",
                 className: name.toLowerCase(),
                 objectId: obj.get("objectId")
-            } as NCMBPointer);
+            });
         });
         return json;
     }

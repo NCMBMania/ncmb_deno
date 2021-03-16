@@ -55,11 +55,11 @@ class NCMBRequest {
     const data = {...params}
     for (const key of ['createDate', 'updateDate', 'objectId']) {
       if (key in data) {
-        delete data.createDate
+        delete data[key]
       }
     }
     for (const key in data) {
-      const value = data[key]
+      const value: any = data[key]
       if (value instanceof Date) {
         data[key] = {
           __type: 'Date',

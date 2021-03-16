@@ -1,6 +1,7 @@
 import NCMB, { NCMBQuery, NCMBObject, NCMBAcl, NCMBRequest } from '../index'
 import * as FormData from 'form-data'
 import { JsonObject } from '../@types/misc'
+// import { Buffer } from '../ncmb'
 
 class NCMBFile extends NCMBObject {
   static ncmb: NCMB;
@@ -13,16 +14,15 @@ class NCMBFile extends NCMBObject {
     return new NCMBQuery('files');
   }
 
-  static async upload(fileName: string, fileData: string | Buffer, acl?: NCMBAcl, contentType?: string | null): Promise<NCMBFile> {
+  static async upload(fileName: string, fileData: string | Buffer | Blob, acl?: NCMBAcl, contentType?: string | null): Promise<NCMBFile> {
     const r = new NCMBRequest;
     try {
       const form = new FormData();
       contentType = contentType || 'application/octet-stream';
-      if (fileData instanceof Buffer) {
-        const ft = await FileType.fromBuffer(fileData as Buffer)
-        form.append('file', fileData, { contentType: ft?.mime });
+      if (typeof fileData === 'string') {
+        form.append('file', fileData, contentType );
       } else {
-        form.append('file', fileData, contentType);
+        form.append('file', fileData as Blob, contentType);
       }
       form.append('acl', JSON.stringify((acl || new NCMBAcl).toJSON()));
       const json = await r.exec('POST', 'files', {}, form, fileName)

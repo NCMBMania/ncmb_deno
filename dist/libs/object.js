@@ -180,9 +180,9 @@ var NCMBObject = /** @class */ (function () {
     };
     NCMBObject.prototype.toPointer = function () {
         return {
-            '__type': 'Pointer',
-            'className': this._name,
-            'objectId': this.get('objectId')
+            __type: 'Pointer',
+            className: this._name,
+            objectId: this.get('objectId')
         };
     };
     NCMBObject.prototype.toJSON = function () {
